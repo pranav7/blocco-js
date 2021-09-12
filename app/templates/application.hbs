@@ -3,3 +3,16 @@
 <h2 id="title">Welcome to Ember</h2>
 
 {{outlet}}
+
+<ul>
+  {{#each
+    (array
+      (hash title="Black Dog" band="Led Zeppelin" rating=3)
+      (hash title="Yellow Ledbetter" band="Pearl Jam" rating=4)
+      (hash title="The Pretender" band="Foo Fighters" rating=2)
+    ) as |song| }}
+    <li>
+      {{song.title}} by {{song.band}} ({{song.rating}})
+    </li>
+  {{/each}}
+</ul>
