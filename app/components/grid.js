@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
+import { Calendar } from '@fullcalendar/core';
 
 class GridConfig {
   @tracked start;
@@ -27,8 +28,8 @@ export default class GridComponent extends Component {
     let endTime = moment(this.gridConfig.end, 'HH::mm');
 
     while (startTime <= endTime) {
-      slots.push(startTime.format('h:mm'));
-      startTime.add(15, 'minutes');
+      slots.push(startTime.format('h:mm a'));
+      startTime.add(60, 'minutes');
     }
 
     return slots;
