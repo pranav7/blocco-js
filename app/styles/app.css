@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-size: 12px;
+}
+
+.grid__time-slot__container {
+  width: 60px;
+}
+
+.grid__time-slot {
+  position: relative;
+  top: -6px;
+}
+
+.grid__block-container {
+  height: 32px;
+}
