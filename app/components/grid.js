@@ -43,8 +43,4 @@ export default class Grid extends Component {
     });
     calendar.render();
   }
-
-  test(element) {
-    console.log('test', element);
-  }
 }
