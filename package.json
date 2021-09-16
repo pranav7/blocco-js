@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
+    "@ember/render-modifiers": "^1.0.2",
     "@ember/test-helpers": "^2.4.2",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
@@ -56,6 +57,7 @@
     "@types/rsvp": "^4.0.4",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
+    "css-loader": "5.2.7",
     "ember-auto-import": "^1.11.3",
     "ember-cli": "~3.28.0",
     "ember-cli-app-version": "^5.0.0",
@@ -90,6 +92,7 @@
     "prettier": "2.4.0",
     "qunit": "^2.16.0",
     "qunit-dom": "^1.6.0",
+    "style-loader": "2.0.0",
     "tailwindcss": "^2.2.15",
     "typescript": "^4.4.3"
   },
@@ -99,5 +102,9 @@
   "ember": {
     "edition": "octane"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@fullcalendar/core": "^5.9.0",
+    "@fullcalendar/daygrid": "^5.9.0",
+    "@fullcalendar/interaction": "^5.9.0"
+  }
 }

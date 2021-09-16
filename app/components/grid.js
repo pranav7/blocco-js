@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
 import { Calendar } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
 
 class GridConfig {
   @tracked start;
@@ -13,7 +14,7 @@ class GridConfig {
   }
 }
 
-export default class GridComponent extends Component {
+export default class Grid extends Component {
   gridConfig;
 
   constructor() {
@@ -33,5 +34,17 @@ export default class GridComponent extends Component {
     }
 
     return slots;
+  }
+
+  renderCalendar(element) {
+    let calendar = new Calendar(element, {
+      plugins: [dayGridPlugin],
+      initialView: 'dayGridWeek',
+    });
+    calendar.render();
+  }
+
+  test(element) {
+    console.log('test', element);
   }
 }
