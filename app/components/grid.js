@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { action } from '@ember/object';
+import { DateTime } from 'luxon';
 
 class GridConfig {
   @tracked start;
@@ -16,12 +17,33 @@ class GridConfig {
   }
 }
 
+class Event {
+  @tracked title;
+  @tracked start;
+  @tracked end;
+
+  constructor(title, start, end) {
+    this.title = title;
+    this.start = start;
+    this.end = end;
+  }
+}
+
 export default class Grid extends Component {
   gridConfig;
+  dateTime = DateTime;
+  events = [];
 
   constructor() {
     super(...arguments);
     this.gridConfig = new GridConfig('9:00:00', '18:00:00');
+    this.events.push(
+      new Event(
+        'Stand up',
+        this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+        this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+      ),
+    );
   }
 
   @action
@@ -36,6 +58,7 @@ export default class Grid extends Component {
       nowIndicator: true,
       slotMinTime: this.gridConfig.start,
       slotMaxTime: this.gridConfig.end,
+      events: this.events,
     });
     calendar.render();
   }

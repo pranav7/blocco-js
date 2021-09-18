@@ -75,7 +75,6 @@
     "ember-fetch": "^8.1.1",
     "ember-load-initializers": "^2.1.2",
     "ember-maybe-import-regenerator": "^0.1.6",
-    "ember-moment": "^9.0.0",
     "ember-page-title": "^6.2.2",
     "ember-qunit": "^5.1.4",
     "ember-resolver": "^8.0.2",
@@ -106,6 +105,7 @@
     "@fullcalendar/core": "^5.9.0",
     "@fullcalendar/daygrid": "^5.9.0",
     "@fullcalendar/interaction": "^5.9.0",
-    "@fullcalendar/timegrid": "^5.9.0"
+    "@fullcalendar/timegrid": "^5.9.0",
+    "luxon": "^2.0.2"
   }
 }
