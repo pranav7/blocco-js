@@ -21,11 +21,13 @@ class Event {
   @tracked title;
   @tracked start;
   @tracked end;
+  @tracked editable;
 
-  constructor(title, start, end) {
+  constructor({ title, start, end, editable }) {
     this.title = title;
     this.start = start;
     this.end = end;
+    this.editable = editable || true;
   }
 }
 
@@ -38,11 +40,12 @@ export default class Grid extends Component {
     super(...arguments);
     this.gridConfig = new GridConfig('9:00:00', '18:00:00');
     this.events.push(
-      new Event(
-        'Stand up',
-        this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
-        this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
-      ),
+      new Event({
+        title: 'Stand up',
+        start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+        editable: false,
+      }),
     );
   }
 
