@@ -1,8 +1,10 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import moment from 'moment';
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { action } from '@ember/object';
 
 class GridConfig {
   @tracked start;
@@ -19,27 +21,21 @@ export default class Grid extends Component {
 
   constructor() {
     super(...arguments);
-
-    this.gridConfig = new GridConfig(9, 18);
+    this.gridConfig = new GridConfig('9:00:00', '18:00:00');
   }
 
-  get timeSlots() {
-    let slots = [];
-    let startTime = moment(this.gridConfig.start, 'HH::mm');
-    let endTime = moment(this.gridConfig.end, 'HH::mm');
-
-    while (startTime <= endTime) {
-      slots.push(startTime.format('h:mm a'));
-      startTime.add(60, 'minutes');
-    }
-
-    return slots;
-  }
-
+  @action
   renderCalendar(element) {
     let calendar = new Calendar(element, {
-      plugins: [dayGridPlugin],
-      initialView: 'dayGridWeek',
+      plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
+      initialView: 'timeGridDay',
+      height: 800,
+      expandRows: true,
+      editable: true,
+      headerToolbar: false,
+      nowIndicator: true,
+      slotMinTime: this.gridConfig.start,
+      slotMaxTime: this.gridConfig.end,
     });
     calendar.render();
   }

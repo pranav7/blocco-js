@@ -1,12 +1,5 @@
-<div class="grid__container">
-  {{#each this.timeSlots as |timeSlot|}}
-    <div class="flex flex-row items-start mb-2 gap-2">
-      <div class="grid__time-slot__container text-right">
-        <span class="grid__time-slot">{{timeSlot}}</span>
-      </div>
-      <div class="grid__block-container border-t border-black w-44 h-4 cursor-pointer"></div>
-    </div>
-  {{/each}}
+<div {{did-insert this.renderCalendar}}
+  id="calendar"
+  class="w-80"
+>
 </div>
-
-<div id="calendar" class="border" {{did-insert this.renderCalendar}}></div>
