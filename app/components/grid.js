@@ -4,7 +4,6 @@ import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import luxonPlugin from '@fullcalendar/luxon';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
 
@@ -36,6 +35,9 @@ export default class Grid extends Component {
   gridConfig;
   dateTime = DateTime;
   events = [];
+  calendar;
+
+  @tracked showAddEventDialog = false;
 
   constructor() {
     super(...arguments);
@@ -73,7 +75,7 @@ export default class Grid extends Component {
 
   @action
   renderCalendar(element) {
-    let calendar = new Calendar(element, {
+    this.calendar = new Calendar(element, {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       headerToolbar: false,
       initialView: 'timeGridDay',
@@ -85,8 +87,22 @@ export default class Grid extends Component {
       slotMaxTime: this.gridConfig.end,
       events: this.events,
       dayHeaders: false,
+      dateClick: this.dateClick,
     });
-    calendar.render();
+    this.calendar.render();
+  }
+
+  @action
+  dateClick(info) {
+    this.showAddEventDialog = true;
+    this.calendar.addEvent(
+      new Event({
+        title: 'New event',
+        start: info.dateStr,
+        end: info.dateStr,
+        editable: true,
+      }),
+    );
   }
 
   get today() {
@@ -97,5 +113,9 @@ export default class Grid extends Component {
       year: dateTime.toFormat('yyyy'),
       day: dateTime.toFormat('cccc'),
     };
+  }
+
+  get dialogFocus() {
+    return document.getElementById('helloButton');
   }
 }
