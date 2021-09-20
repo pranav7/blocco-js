@@ -10,6 +10,18 @@ module.exports = function (defaults) {
         plugins: [{ module: require('tailwindcss') }],
       },
     },
+    autoImport: {
+      webpack: {
+        module: {
+          rules: [
+            {
+              test: /\.css$/i,
+              use: ['style-loader', 'css-loader'],
+            },
+          ],
+        },
+      },
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

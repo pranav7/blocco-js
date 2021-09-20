@@ -1,7 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import moment from 'moment';
 import { Calendar } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import luxonPlugin from '@fullcalendar/luxon';
+import { action } from '@ember/object';
+import { DateTime } from 'luxon';
 
 class GridConfig {
   @tracked start;
@@ -13,25 +18,82 @@ class GridConfig {
   }
 }
 
-export default class GridComponent extends Component {
+class Event {
+  @tracked title;
+  @tracked start;
+  @tracked end;
+  @tracked editable;
+
+  constructor({ title, start, end, editable }) {
+    this.title = title;
+    this.start = start;
+    this.end = end;
+    this.editable = editable || false;
+  }
+}
+
+export default class Grid extends Component {
   gridConfig;
+  dateTime = DateTime;
+  events = [];
 
   constructor() {
     super(...arguments);
-
-    this.gridConfig = new GridConfig(9, 18);
+    this.gridConfig = new GridConfig('9:00:00', '18:00:00');
+    this.events.push(
+      new Event({
+        title: 'Stand up',
+        start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+      }),
+      new Event({
+        title: 'Shower + coffee',
+        start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+        end: this.dateTime.fromObject({ hour: 10, minute: 30 }).toString(),
+      }),
+      new Event({
+        title: 'Lunch [Block]',
+        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 1, minute: 45 }).toString(),
+      }),
+      new Event({
+        title: 'Interview',
+        start: this.dateTime.fromObject({ hour: 16 }).toString(),
+        end: this.dateTime.fromObject({ hour: 17 }).toString(),
+      }),
+      new Event({
+        title: 'Feedback',
+        start: this.dateTime.fromObject({ hour: 17 }).toString(),
+        end: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
+      }),
+    );
   }
 
-  get timeSlots() {
-    let slots = [];
-    let startTime = moment(this.gridConfig.start, 'HH::mm');
-    let endTime = moment(this.gridConfig.end, 'HH::mm');
+  @action
+  renderCalendar(element) {
+    let calendar = new Calendar(element, {
+      plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
+      headerToolbar: false,
+      initialView: 'timeGridDay',
+      height: 800,
+      expandRows: true,
+      editable: true,
+      nowIndicator: true,
+      slotMinTime: this.gridConfig.start,
+      slotMaxTime: this.gridConfig.end,
+      events: this.events,
+      dayHeaders: false,
+    });
+    calendar.render();
+  }
 
-    while (startTime <= endTime) {
-      slots.push(startTime.format('h:mm a'));
-      startTime.add(60, 'minutes');
-    }
-
-    return slots;
+  get today() {
+    let dateTime = DateTime.local();
+    return {
+      date: dateTime.toFormat('d'),
+      month: dateTime.toFormat('LLLL'),
+      year: dateTime.toFormat('yyyy'),
+      day: dateTime.toFormat('cccc'),
+    };
   }
 }
