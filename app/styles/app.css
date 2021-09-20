@@ -1,22 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-body {
-  font-size: 12px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.grid__time-slot__container {
-  width: 60px;
-}
-
-.grid__time-slot {
-  position: relative;
-  top: -6px;
-}
-
-.grid__block-container {
-  height: 32px;
-}
+@import 'base';

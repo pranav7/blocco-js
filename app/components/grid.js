@@ -41,30 +41,32 @@ export default class Grid extends Component {
     super(...arguments);
     this.gridConfig = new GridConfig('9:00:00', '18:00:00');
     this.events.push(
+      // fixed events
+      new Event({
+        title: 'Shower + Coffee',
+        start: this.dateTime.fromObject({ hour: 9 }).toString(),
+        end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+      }),
       new Event({
         title: 'Stand up',
         start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
       }),
       new Event({
-        title: 'Shower + coffee',
-        start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
-        end: this.dateTime.fromObject({ hour: 10, minute: 30 }).toString(),
-      }),
-      new Event({
         title: 'Lunch [Block]',
-        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 1, minute: 45 }).toString(),
+        start: this.dateTime.fromObject({ hour: 13 }).toString(),
+        end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
       }),
       new Event({
-        title: 'Interview',
-        start: this.dateTime.fromObject({ hour: 16 }).toString(),
-        end: this.dateTime.fromObject({ hour: 17 }).toString(),
+        title: 'Wrap up and shutdown',
+        start: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 18 }).toString(),
       }),
+      // todays events
       new Event({
-        title: 'Feedback',
-        start: this.dateTime.fromObject({ hour: 17 }).toString(),
-        end: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
+        title: 'w/ Eamon',
+        start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+        end: this.dateTime.fromObject({ hour: 10, minute: 15 }).toString(),
       }),
     );
   }
