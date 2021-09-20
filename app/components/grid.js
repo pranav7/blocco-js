@@ -4,6 +4,7 @@ import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import luxonPlugin from '@fullcalendar/luxon';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
 
@@ -27,7 +28,7 @@ class Event {
     this.title = title;
     this.start = start;
     this.end = end;
-    this.editable = editable || true;
+    this.editable = editable || false;
   }
 }
 
@@ -44,7 +45,26 @@ export default class Grid extends Component {
         title: 'Stand up',
         start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
-        editable: false,
+      }),
+      new Event({
+        title: 'Shower + coffee',
+        start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+        end: this.dateTime.fromObject({ hour: 10, minute: 30 }).toString(),
+      }),
+      new Event({
+        title: 'Lunch [Block]',
+        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 1, minute: 45 }).toString(),
+      }),
+      new Event({
+        title: 'Interview',
+        start: this.dateTime.fromObject({ hour: 16 }).toString(),
+        end: this.dateTime.fromObject({ hour: 17 }).toString(),
+      }),
+      new Event({
+        title: 'Feedback',
+        start: this.dateTime.fromObject({ hour: 17 }).toString(),
+        end: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
       }),
     );
   }
@@ -53,16 +73,27 @@ export default class Grid extends Component {
   renderCalendar(element) {
     let calendar = new Calendar(element, {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
+      headerToolbar: false,
       initialView: 'timeGridDay',
       height: 800,
       expandRows: true,
       editable: true,
-      headerToolbar: false,
       nowIndicator: true,
       slotMinTime: this.gridConfig.start,
       slotMaxTime: this.gridConfig.end,
       events: this.events,
+      dayHeaders: false,
     });
     calendar.render();
+  }
+
+  get today() {
+    let dateTime = DateTime.local();
+    return {
+      date: dateTime.toFormat('d'),
+      month: dateTime.toFormat('LLLL'),
+      year: dateTime.toFormat('yyyy'),
+      day: dateTime.toFormat('cccc'),
+    };
   }
 }

@@ -53,6 +53,7 @@
     "@types/ember__test-helpers": "^2.0.1",
     "@types/ember__utils": "^3.16.2",
     "@types/htmlbars-inline-precompile": "^1.0.1",
+    "@types/luxon": "^2.0.4",
     "@types/qunit": "^2.11.2",
     "@types/rsvp": "^4.0.4",
     "babel-eslint": "^10.1.0",
@@ -105,6 +106,7 @@
     "@fullcalendar/core": "^5.9.0",
     "@fullcalendar/daygrid": "^5.9.0",
     "@fullcalendar/interaction": "^5.9.0",
+    "@fullcalendar/luxon": "^5.9.0",
     "@fullcalendar/timegrid": "^5.9.0",
     "luxon": "^2.0.2"
   }

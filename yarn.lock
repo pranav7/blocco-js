@@ -1256,6 +1256,14 @@
     "@fullcalendar/common" "~5.9.0"
     tslib "^2.1.0"
 
+"@fullcalendar/luxon@^5.9.0":
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/luxon/-/luxon-5.9.0.tgz#34bbdf2f3ae7f78322173c6d437b843ab9058c0b"
+  integrity sha512-N2ZMJ7JD1yBt56pumi3CSo9PHf8eVsbfMU+ECvvifyae1Zi2SRQhpV1LnWm92BVg4dPk42Ciz0TB4TaH6um3EA==
+  dependencies:
+    "@fullcalendar/common" "~5.9.0"
+    tslib "^2.1.0"
+
 "@fullcalendar/timegrid@^5.9.0":
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/@fullcalendar/timegrid/-/timegrid-5.9.0.tgz#06b8367cb98648c5be23a5b4ba42a124747f5744"
@@ -1846,6 +1854,11 @@
   version "7.0.9"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
   integrity sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==
+
+"@types/luxon@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-2.0.4.tgz#f7b5a86ccd843c0ccaddfaedd9ee1081bc1cde3b"
+  integrity sha512-l3xuhmyF2kBldy15SeY6d6HbK2BacEcSK1qTF1ISPtPHr29JH0C1fndz9ExXLKpGl0J6pZi+dGp1i5xesMt60Q==
 
 "@types/mime@^1":
   version "1.3.2"
