@@ -56,7 +56,7 @@ export default class Grid extends Component {
       }),
       new Event({
         title: 'Lunch [Block]',
-        start: this.dateTime.fromObject({ hour: 13 }).toString(),
+        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
       }),
       new Event({
@@ -68,7 +68,12 @@ export default class Grid extends Component {
       new Event({
         title: 'w/ Eamon',
         start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
-        end: this.dateTime.fromObject({ hour: 10, minute: 15 }).toString(),
+        end: this.dateTime.fromObject({ hour: 10, minute: 30 }).toString(),
+      }),
+      new Event({
+        title: 'Rock&Roll w/ Ember.js',
+        start: this.dateTime.fromObject({ hour: 11, minute: 0 }).toString(),
+        end: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
       }),
     );
   }
@@ -79,7 +84,7 @@ export default class Grid extends Component {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       headerToolbar: false,
       initialView: 'timeGridDay',
-      height: 800,
+      height: 675,
       expandRows: true,
       editable: true,
       nowIndicator: true,
