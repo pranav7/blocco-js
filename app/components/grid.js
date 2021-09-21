@@ -60,7 +60,7 @@ export default class Grid extends Component {
         color: '#2B4162',
       }),
       new Event({
-        title: 'Lunch [Block]',
+        title: '🍕 Lunch',
         start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
         color: '#2B4162',
@@ -86,7 +86,7 @@ export default class Grid extends Component {
         title: 'Blocco',
         start: this.dateTime.fromObject({ hour: 14, minute: 15 }).toString(),
         end: this.dateTime.fromObject({ hour: 14, minute: 45 }).toString(),
-        color: 'green',
+        color: 'gray',
       }),
       new Event({
         title: 'SMS Opt-ins',
