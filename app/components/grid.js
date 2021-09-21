@@ -4,7 +4,6 @@ import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import luxonPlugin from '@fullcalendar/luxon';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
 
@@ -24,11 +23,12 @@ class Event {
   @tracked end;
   @tracked editable;
 
-  constructor({ title, start, end, editable }) {
+  constructor({ title, start, end, editable, defaultTimedEventDuration, color }) {
     this.title = title;
     this.start = start;
     this.end = end;
     this.editable = editable || false;
+    this.color = color;
   }
 }
 
@@ -36,6 +36,11 @@ export default class Grid extends Component {
   gridConfig;
   dateTime = DateTime;
   events = [];
+  calendar;
+
+  @tracked showAddEventDialog = false;
+  @tracked newEventTitle;
+  @tracked newEventInfo;
 
   constructor() {
     super(...arguments);
@@ -46,38 +51,58 @@ export default class Grid extends Component {
         title: 'Shower + Coffee',
         start: this.dateTime.fromObject({ hour: 9 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+        color: '#2B4162',
       }),
       new Event({
         title: 'Stand up',
         start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+        color: '#2B4162',
       }),
       new Event({
         title: 'Lunch [Block]',
-        start: this.dateTime.fromObject({ hour: 13 }).toString(),
+        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
+        color: '#2B4162',
       }),
       new Event({
         title: 'Wrap up and shutdown',
         start: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 18 }).toString(),
+        color: '#2B4162',
       }),
       // todays events
       new Event({
         title: 'w/ Eamon',
         start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
-        end: this.dateTime.fromObject({ hour: 10, minute: 15 }).toString(),
+        end: this.dateTime.fromObject({ hour: 10, minute: 30 }).toString(),
+      }),
+      new Event({
+        title: 'Rock&Roll w/ Ember.js',
+        start: this.dateTime.fromObject({ hour: 11, minute: 0 }).toString(),
+        end: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
+      }),
+      new Event({
+        title: 'Blocco',
+        start: this.dateTime.fromObject({ hour: 14, minute: 15 }).toString(),
+        end: this.dateTime.fromObject({ hour: 14, minute: 45 }).toString(),
+        color: 'green',
+      }),
+      new Event({
+        title: 'SMS Opt-ins',
+        start: this.dateTime.fromObject({ hour: 15, minute: 0 }).toString(),
+        end: this.dateTime.fromObject({ hour: 16, minute: 30 }).toString(),
       }),
     );
   }
 
   @action
   renderCalendar(element) {
-    let calendar = new Calendar(element, {
+    this.calendar = new Calendar(element, {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       headerToolbar: false,
       initialView: 'timeGridDay',
-      height: 800,
+      height: 675,
       expandRows: true,
       editable: true,
       nowIndicator: true,
@@ -85,8 +110,31 @@ export default class Grid extends Component {
       slotMaxTime: this.gridConfig.end,
       events: this.events,
       dayHeaders: false,
+      defaultTimedEventDuration: '00:30',
+      dateClick: this.dateClick,
     });
-    calendar.render();
+    this.calendar.render();
+  }
+
+  @action
+  dateClick(info) {
+    this.showAddEventDialog = true;
+    this.newEventInfo = info;
+  }
+
+  @action
+  createEvent() {
+    this.calendar.addEvent(
+      new Event({
+        title: this.newEventTitle || 'New event',
+        start: this.newEventInfo.dateStr,
+        editable: true,
+      }),
+    );
+
+    this.showAddEventDialog = false;
+    this.newEventInfo = null;
+    this.newEventTitle = null;
   }
 
   get today() {
