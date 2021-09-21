@@ -40,6 +40,8 @@ export default class Grid extends Component {
   calendar;
 
   @tracked showAddEventDialog = false;
+  @tracked newEventTitle;
+  @tracked newEventInfo;
 
   constructor() {
     super(...arguments);
@@ -81,6 +83,17 @@ export default class Grid extends Component {
         start: this.dateTime.fromObject({ hour: 11, minute: 0 }).toString(),
         end: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
       }),
+      new Event({
+        title: 'Blocco',
+        start: this.dateTime.fromObject({ hour: 14, minute: 15 }).toString(),
+        end: this.dateTime.fromObject({ hour: 14, minute: 45 }).toString(),
+        color: 'green',
+      }),
+      new Event({
+        title: 'SMS Opt-ins',
+        start: this.dateTime.fromObject({ hour: 15, minute: 0 }).toString(),
+        end: this.dateTime.fromObject({ hour: 16, minute: 30 }).toString(),
+      }),
     );
   }
 
@@ -107,13 +120,22 @@ export default class Grid extends Component {
   @action
   dateClick(info) {
     this.showAddEventDialog = true;
+    this.newEventInfo = info;
+  }
+
+  @action
+  createEvent() {
     this.calendar.addEvent(
       new Event({
-        title: 'New event',
-        start: info.dateStr,
+        title: this.newEventTitle || 'New event',
+        start: this.newEventInfo.dateStr,
         editable: true,
       }),
     );
+
+    this.showAddEventDialog = false;
+    this.newEventInfo = null;
+    this.newEventTitle = null;
   }
 
   get today() {
@@ -124,9 +146,5 @@ export default class Grid extends Component {
       year: dateTime.toFormat('yyyy'),
       day: dateTime.toFormat('cccc'),
     };
-  }
-
-  get dialogFocus() {
-    return document.getElementById('helloButton');
   }
 }
