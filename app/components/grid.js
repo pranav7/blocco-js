@@ -28,7 +28,6 @@ class Event {
     this.start = start;
     this.end = end;
     this.editable = editable || false;
-    this.defaultTimedEventDuration = defaultTimedEventDuration || '00:30';
     this.color = color;
   }
 }
