@@ -13,46 +13,25 @@
   </div>
 
   <Dialog
-    class='fixed inset-0 z-100 overflow-y-auto'
+    class=''
     @as='div'
     @isOpen={{this.showAddEventDialog}}
     @onClose={{set this 'showAddEventDialog' false}}
     as |dialog|
   >
-    <div class='flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0'>
-      <dialog.Overlay class='fixed inset-0 bg-gray-500 dark:bg-gray-900 bg-opacity-75 transition-opacity' />
-      {{! This element is to trick the browser into centering the modal contents. }}
-      <span class='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>&#8203;</span>
+      <div class='fixed border shadow-2xl bg-white dark:bg-gray-800 inset-y-0 right-0 w-4/12 px-10 pt-4'>
+        <dialog.Title class='text-lg font-medium text-gray-900 dark:text-gray-100 leading-6' @as='h3'>
+          Add Event
+        </dialog.Title>
 
-      <div
-        class='fixed bg-white dark:bg-gray-800 inset-y-0 right-0 flex w-4/12 px-10 pt-4'
-      >
-        <div>
-          <div class='text-center'>
-            <dialog.Title
-              class='text-lg font-medium text-gray-900 dark:text-gray-100 leading-6'
-              @as='h3'
-            >
-              Title
-            </dialog.Title>
+        <div class='mt-5 flex flex-col gap-1'>
+          <label for="event-name">Event Name</label>
+          <Input id="event-name" @type="text" class="border py-1 rounded-sm"/>
+        </div>
 
-            <div class='mt-2'>
-              <p class='text-sm text-gray-500 dark:text-gray-100'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Consequatur amet labore.
-              </p>
-            </div>
-          </div>
-
-          <button
-            type='button'
-            class='inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-            {{on 'click' dialog.onClose}}
-          >
-            Done
-          </button>
+        <div class="mt-5">
+          <button type="button" {{on 'click' (set this 'showAddEventDialog' false)}}>Add</button>
         </div>
       </div>
-    </div>
   </Dialog>
 </div>

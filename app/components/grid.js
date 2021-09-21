@@ -23,11 +23,13 @@ class Event {
   @tracked end;
   @tracked editable;
 
-  constructor({ title, start, end, editable }) {
+  constructor({ title, start, end, editable, defaultTimedEventDuration, color }) {
     this.title = title;
     this.start = start;
     this.end = end;
     this.editable = editable || false;
+    this.defaultTimedEventDuration = defaultTimedEventDuration || '00:30';
+    this.color = color;
   }
 }
 
@@ -48,21 +50,25 @@ export default class Grid extends Component {
         title: 'Shower + Coffee',
         start: this.dateTime.fromObject({ hour: 9 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+        color: '#2B4162',
       }),
       new Event({
         title: 'Stand up',
         start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+        color: '#2B4162',
       }),
       new Event({
         title: 'Lunch [Block]',
         start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
+        color: '#2B4162',
       }),
       new Event({
         title: 'Wrap up and shutdown',
         start: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 18 }).toString(),
+        color: '#2B4162',
       }),
       // todays events
       new Event({
@@ -92,6 +98,7 @@ export default class Grid extends Component {
       slotMaxTime: this.gridConfig.end,
       events: this.events,
       dayHeaders: false,
+      defaultTimedEventDuration: '00:30',
       dateClick: this.dateClick,
     });
     this.calendar.render();
@@ -104,7 +111,6 @@ export default class Grid extends Component {
       new Event({
         title: 'New event',
         start: info.dateStr,
-        end: info.dateStr,
         editable: true,
       }),
     );
