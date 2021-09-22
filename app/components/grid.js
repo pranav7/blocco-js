@@ -1,5 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -11,28 +13,15 @@ class GridConfig {
   @tracked start;
   @tracked end;
 
-  constructor(start, end) {
+  constructor({ start, end }) {
     this.start = start;
     this.end = end;
-  }
-}
-
-class Event {
-  @tracked title;
-  @tracked start;
-  @tracked end;
-  @tracked editable;
-
-  constructor({ title, start, end, editable, defaultTimedEventDuration, color }) {
-    this.title = title;
-    this.start = start;
-    this.end = end;
-    this.editable = editable || false;
-    this.color = color;
   }
 }
 
 export default class Grid extends Component {
+  @service store;
+
   gridConfig;
   dateTime = DateTime;
   events = [];
@@ -44,7 +33,7 @@ export default class Grid extends Component {
 
   constructor() {
     super(...arguments);
-    this.gridConfig = new GridConfig('9:00:00', '18:00:00');
+    this.gridConfig = new GridConfig({ start: '9:00:00', end: '18:00:00' });
     this.events.push(
       // fixed events
       // new Event({
@@ -53,46 +42,46 @@ export default class Grid extends Component {
       //   end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
       //   color: '#2B4162',
       // }),
-      new Event({
+      this.store.createRecord('event', {
         title: 'Stand up',
         start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
         color: '#2B4162',
       }),
-      new Event({
+      this.store.createRecord('event', {
         title: '🍕 Lunch',
-        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
+        start: this.dateTime.fromObject({ hour: 13, minute: 0 }).toString(),
         end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
         color: '#2B4162',
       }),
-      new Event({
+      this.store.createRecord('event', {
         title: 'Wrap up and shutdown',
         start: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 18 }).toString(),
         color: '#2B4162',
       }),
       // todays events
-      new Event({
+      this.store.createRecord('event', {
         title: '🚿 Shower + ☕️ Coffee',
         start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
         end: this.dateTime.fromObject({ hour: 10, minute: 15 }).toString(),
       }),
-      new Event({
+      this.store.createRecord('event', {
         title: 'SMS Tasks',
         start: this.dateTime.fromObject({ hour: 10, minute: 15 }).toString(),
         end: this.dateTime.fromObject({ hour: 11, minute: 30 }).toString(),
       }),
-      new Event({
+      this.store.createRecord('event', {
         title: 'Tasks',
         start: this.dateTime.fromObject({ hour: 11, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
       }),
-      new Event({
+      this.store.createRecord('event', {
         title: 'Blocco',
         start: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
-        end: this.dateTime.fromObject({ hour: 1, minute: 0 }).toString(),
+        end: this.dateTime.fromObject({ hour: 13, minute: 0 }).toString(),
       }),
-      new Event({
+      this.store.createRecord('event', {
         title: 'w/ Paula',
         start: this.dateTime.fromObject({ hour: 15, minute: 0 }).toString(),
         end: this.dateTime.fromObject({ hour: 15, minute: 30 }).toString(),
@@ -129,7 +118,7 @@ export default class Grid extends Component {
   @action
   createEvent() {
     this.calendar.addEvent(
-      new Event({
+      this.store.createRecord('event', {
         title: this.newEventTitle || 'New event',
         start: this.newEventInfo.dateStr,
         editable: true,
