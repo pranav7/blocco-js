@@ -47,12 +47,12 @@ export default class Grid extends Component {
     this.gridConfig = new GridConfig('9:00:00', '18:00:00');
     this.events.push(
       // fixed events
-      new Event({
-        title: 'Shower + Coffee',
-        start: this.dateTime.fromObject({ hour: 9 }).toString(),
-        end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
-        color: '#2B4162',
-      }),
+      // new Event({
+      //   title: '🚿 Shower + ☕️ Coffee',
+      //   start: this.dateTime.fromObject({ hour: 9 }).toString(),
+      //   end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+      //   color: '#2B4162',
+      // }),
       new Event({
         title: 'Stand up',
         start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
@@ -73,25 +73,29 @@ export default class Grid extends Component {
       }),
       // todays events
       new Event({
-        title: 'w/ Eamon',
+        title: '🚿 Shower + ☕️ Coffee',
         start: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
-        end: this.dateTime.fromObject({ hour: 10, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 10, minute: 15 }).toString(),
       }),
       new Event({
-        title: 'Rock&Roll w/ Ember.js',
-        start: this.dateTime.fromObject({ hour: 11, minute: 0 }).toString(),
+        title: 'SMS Tasks',
+        start: this.dateTime.fromObject({ hour: 10, minute: 15 }).toString(),
+        end: this.dateTime.fromObject({ hour: 11, minute: 30 }).toString(),
+      }),
+      new Event({
+        title: 'Tasks',
+        start: this.dateTime.fromObject({ hour: 11, minute: 30 }).toString(),
         end: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
       }),
       new Event({
         title: 'Blocco',
-        start: this.dateTime.fromObject({ hour: 14, minute: 15 }).toString(),
-        end: this.dateTime.fromObject({ hour: 14, minute: 45 }).toString(),
-        color: 'gray',
+        start: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
+        end: this.dateTime.fromObject({ hour: 1, minute: 0 }).toString(),
       }),
       new Event({
-        title: 'SMS Opt-ins',
+        title: 'w/ Paula',
         start: this.dateTime.fromObject({ hour: 15, minute: 0 }).toString(),
-        end: this.dateTime.fromObject({ hour: 16, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 15, minute: 30 }).toString(),
       }),
     );
   }
