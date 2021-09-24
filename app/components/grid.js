@@ -41,6 +41,7 @@ export default class Grid extends Component {
         start: event.start,
         end: event.end,
         color: event.color,
+        editable: event.editable,
       });
     });
 
