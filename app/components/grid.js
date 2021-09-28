@@ -34,13 +34,11 @@ export default class Grid extends Component {
   constructor() {
     super(...arguments);
     this.gridConfig = new GridConfig({ start: '9:00:00', end: '18:00:00' });
-
-    this.args.events.map((event) => this.events.push(event.toJSON()));
-
+    this.args.events.map((event) => this.events.push(event.toJSON({ includeId: true })));
     this.events.push(
       // fixed events
       this.store.createRecord('event', {
-        title: '🚿 Shower + ☕️ Coffee',
+        title: '☕️ Coffee + Prep',
         start: this.dateTime.fromObject({ hour: 9, minute: 0 }).toString(),
         end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
         color: '#2B4162',
@@ -53,8 +51,8 @@ export default class Grid extends Component {
       }),
       this.store.createRecord('event', {
         title: '🍕 Lunch',
-        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
+        start: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
+        end: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
         color: '#2B4162',
       }),
       this.store.createRecord('event', {
@@ -64,31 +62,6 @@ export default class Grid extends Component {
         color: '#2B4162',
       }),
       // today's events
-      this.store.createRecord('event', {
-        title: 'SMS - Twilio Settings Page',
-        start: this.dateTime.fromObject({ hour: 10, minute: 0 }).toString(),
-        end: this.dateTime.fromObject({ hour: 11, minute: 30 }).toString(),
-      }),
-      this.store.createRecord('event', {
-        title: 'w/ Andy (EM Opportunity w/ London team)',
-        start: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 14, minute: 0 }).toString(),
-      }),
-      this.store.createRecord('event', {
-        title: 'SMS - Paragraph class tests',
-        start: this.dateTime.fromObject({ hour: 14, minute: 0 }).toString(),
-        end: this.dateTime.fromObject({ hour: 15, minute: 0 }).toString(),
-      }),
-      this.store.createRecord('event', {
-        title: 'Interview',
-        start: this.dateTime.fromObject({ hour: 15, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 16, minute: 30 }).toString(),
-      }),
-      this.store.createRecord('event', {
-        title: 'Interview feedback',
-        start: this.dateTime.fromObject({ hour: 16, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 17, minute: 15 }).toString(),
-      }),
     );
   }
 
@@ -108,6 +81,7 @@ export default class Grid extends Component {
       dayHeaders: false,
       defaultTimedEventDuration: '00:30',
       dateClick: this.dateClick,
+      eventResize: this.eventResize,
     });
     this.calendar.render();
   }
@@ -119,13 +93,24 @@ export default class Grid extends Component {
   }
 
   @action
+  eventResize(info) {
+    let event = this.store.findRecord('event', info.event.id);
+    console.log('event resized', info, event.id);
+  }
+
+  @action
   createEvent() {
+    let startDate = DateTime.fromJSDate(this.newEventInfo.date);
+    let endDate = startDate.plus({ minutes: 30 });
+
     let event = this.store.createRecord('event', {
       title: this.newEventTitle || 'New event',
-      start: this.newEventInfo.date,
+      start: startDate.toISO(),
+      end: endDate.toISO(),
       editable: true,
     });
     event.save();
+    console.log('event saved', event.id);
     this.calendar.addEvent(event);
 
     this.showAddEventDialog = false;
