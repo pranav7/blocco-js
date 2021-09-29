@@ -51,8 +51,8 @@ export default class Grid extends Component {
       }),
       this.store.createRecord('event', {
         title: '🍕 Lunch',
-        start: this.dateTime.fromObject({ hour: 12, minute: 0 }).toString(),
-        end: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
+        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
+        end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
         color: '#2B4162',
       }),
       this.store.createRecord('event', {
@@ -82,6 +82,7 @@ export default class Grid extends Component {
       defaultTimedEventDuration: '00:30',
       dateClick: this.dateClick,
       eventResize: this.eventResize,
+      eventDrop: this.eventDrop,
     });
     this.calendar.render();
   }
@@ -94,8 +95,22 @@ export default class Grid extends Component {
 
   @action
   eventResize(info) {
-    let event = this.store.findRecord('event', info.event.id);
-    console.log('event resized', info, event.id);
+    let event = this.store.peekRecord('event', info.event.id);
+    event.end = event.endDate
+      .plus({
+        days: info.endDelta.days,
+        milliseconds: info.endDelta.milliseconds,
+      })
+      .toJSDate();
+    event.save();
+  }
+
+  @action
+  eventDrop(info) {
+    let event = this.store.peekRecord('event', info.event.id);
+    event.start = event.startDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
+    event.end = event.endDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
+    event.save();
   }
 
   @action
@@ -105,12 +120,11 @@ export default class Grid extends Component {
 
     let event = this.store.createRecord('event', {
       title: this.newEventTitle || 'New event',
-      start: startDate.toISO(),
-      end: endDate.toISO(),
+      start: startDate.toJSDate(),
+      end: endDate.toJSDate(),
       editable: true,
     });
     event.save();
-    console.log('event saved', event.id);
     this.calendar.addEvent(event);
 
     this.showAddEventDialog = false;
