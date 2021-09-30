@@ -83,6 +83,7 @@ export default class Grid extends Component {
       events: this.events,
       dayHeaders: false,
       defaultTimedEventDuration: '00:30',
+      slotDuration: '00:15:00',
       dateClick: this.dateClick,
       eventResize: this.eventResize,
       eventDrop: this.eventDrop,
