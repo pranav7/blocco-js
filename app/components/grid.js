@@ -74,7 +74,7 @@ export default class Grid extends Component {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       headerToolbar: false,
       initialView: 'timeGridDay',
-      height: 675,
+      height: 800,
       expandRows: true,
       editable: true,
       nowIndicator: true,
