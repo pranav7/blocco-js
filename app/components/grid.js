@@ -23,13 +23,13 @@ export default class Grid extends Component {
   @service store;
 
   gridConfig;
-  dateTime = DateTime;
-  events = [];
-  calendar;
 
+  @tracked events = [];
+  @tracked calendar;
   @tracked showAddEventDialog = false;
   @tracked newEventTitle;
   @tracked newEventInfo;
+  @tracked currentDateTime = DateTime.local();
 
   constructor() {
     super(...arguments);
@@ -39,29 +39,32 @@ export default class Grid extends Component {
       // fixed events
       this.store.createRecord('event', {
         title: '☕️ Coffee + Prep',
-        start: this.dateTime.fromObject({ hour: 9, minute: 0 }).toString(),
-        end: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
+        startTime: '9:00',
+        endTime: '9:30',
+        daysOfWeek: [1, 2, 3, 4, 5],
         color: '#2B4162',
       }),
       this.store.createRecord('event', {
-        title: 'Stand up',
-        start: this.dateTime.fromObject({ hour: 9, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 9, minute: 45 }).toString(),
+        title: 'Standup',
+        startTime: '9:30',
+        endTime: '9:45',
+        daysOfWeek: [1, 2, 3, 4, 5],
         color: '#2B4162',
       }),
       this.store.createRecord('event', {
         title: '🍕 Lunch',
-        start: this.dateTime.fromObject({ hour: 12, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 13, minute: 30 }).toString(),
+        startTime: '12:30',
+        endTime: '13:30',
+        daysOfWeek: [1, 2, 3, 4, 5],
         color: '#2B4162',
       }),
       this.store.createRecord('event', {
         title: 'Wrap up and shutdown',
-        start: this.dateTime.fromObject({ hour: 17, minute: 30 }).toString(),
-        end: this.dateTime.fromObject({ hour: 18 }).toString(),
+        startTime: '17:30',
+        endTime: '18:00',
+        daysOfWeek: [1, 2, 3, 4, 5],
         color: '#2B4162',
       }),
-      // today's events
     );
   }
 
@@ -71,7 +74,7 @@ export default class Grid extends Component {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       headerToolbar: false,
       initialView: 'timeGridDay',
-      height: 675,
+      height: 800,
       expandRows: true,
       editable: true,
       nowIndicator: true,
@@ -80,11 +83,24 @@ export default class Grid extends Component {
       events: this.events,
       dayHeaders: false,
       defaultTimedEventDuration: '00:30',
+      slotDuration: '00:15:00',
       dateClick: this.dateClick,
       eventResize: this.eventResize,
       eventDrop: this.eventDrop,
     });
     this.calendar.render();
+  }
+
+  @action
+  previousDay() {
+    this.currentDateTime = this.currentDateTime.plus({ day: -1 });
+    this.calendar.prev();
+  }
+
+  @action
+  nextDay() {
+    this.currentDateTime = this.currentDateTime.plus({ day: 1 });
+    this.calendar.next();
   }
 
   @action
@@ -133,12 +149,11 @@ export default class Grid extends Component {
   }
 
   get today() {
-    let dateTime = DateTime.local();
     return {
-      date: dateTime.toFormat('d'),
-      month: dateTime.toFormat('LLLL'),
-      year: dateTime.toFormat('yyyy'),
-      day: dateTime.toFormat('cccc'),
+      date: this.currentDateTime.toFormat('d'),
+      month: this.currentDateTime.toFormat('LLLL'),
+      year: this.currentDateTime.toFormat('yyyy'),
+      day: this.currentDateTime.toFormat('cccc'),
     };
   }
 }
