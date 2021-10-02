@@ -27,8 +27,10 @@ export default class Grid extends Component {
   @tracked events = [];
   @tracked calendar;
   @tracked showAddEventDialog = false;
+  @tracked showEditEventDialog = false;
   @tracked newEventTitle;
-  @tracked newEventInfo;
+  @tracked calendarClickInfo;
+  @tracked selectedEvent;
   @tracked currentDateTime = DateTime.local();
 
   constructor() {
@@ -87,6 +89,7 @@ export default class Grid extends Component {
       dateClick: this.dateClick,
       eventResize: this.eventResize,
       eventDrop: this.eventDrop,
+      eventClick: this.eventClick,
     });
     this.calendar.render();
   }
@@ -104,9 +107,22 @@ export default class Grid extends Component {
   }
 
   @action
+  moveToToday() {
+    this.currentDateTime = DateTime.local();
+    this.calendar.today();
+  }
+
+  @action
   dateClick(info) {
+    this.calendarClickInfo = info;
     this.showAddEventDialog = true;
-    this.newEventInfo = info;
+  }
+
+  @action
+  eventClick(info) {
+    this.calendarClickInfo = info;
+    this.selectedEvent = this.store.peekRecord('event', this.calendarClickInfo.event.id);
+    this.showEditEventDialog = true;
   }
 
   @action
@@ -131,7 +147,7 @@ export default class Grid extends Component {
 
   @action
   createEvent() {
-    let startDate = DateTime.fromJSDate(this.newEventInfo.date);
+    let startDate = DateTime.fromJSDate(this.calendarClickInfo.date);
     let endDate = startDate.plus({ minutes: 30 });
 
     let event = this.store.createRecord('event', {
@@ -144,8 +160,24 @@ export default class Grid extends Component {
     this.calendar.addEvent(event);
 
     this.showAddEventDialog = false;
-    this.newEventInfo = null;
-    this.newEventTitle = null;
+    this._clearSessionFields();
+  }
+
+  @action
+  saveEvent() {
+    this.calendarClickInfo.event.setProp('title', this.selectedEvent.title);
+    this.selectedEvent.save();
+
+    this._clearSessionFields();
+    this.showEditEventDialog = false;
+  }
+
+  @action
+  deleteEvent() {
+    this.calendarClickInfo.event.remove();
+    this.selectedEvent.destroyRecord();
+    this._clearSessionFields();
+    this.showEditEventDialog = false;
   }
 
   get today() {
@@ -155,5 +187,11 @@ export default class Grid extends Component {
       year: this.currentDateTime.toFormat('yyyy'),
       day: this.currentDateTime.toFormat('cccc'),
     };
+  }
+
+  _clearSessionFields() {
+    this.calendarClickInfo = null;
+    this.selectedEvent = null;
+    this.newEventTitle = null;
   }
 }

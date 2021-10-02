@@ -5,8 +5,9 @@
     </h1>
     <h3 class="text-xl font-light">{{this.today.day}}</h3>
     <div class="flex flex-row gap-2 mt-4">
-      <button type="button" {{on 'click' this.previousDay}}>previous</button> 
-      <button type="button" {{on 'click' this.nextDay}}>next</button> 
+      <button type="button" {{on 'click' this.previousDay}}>&#x2190;</button> 
+      <button type="button" {{on 'click' this.moveToToday}}>today</button> 
+      <button type="button" {{on 'click' this.nextDay}}>&#x2192;</button> 
     </div>
   </div>
 
@@ -15,31 +16,47 @@
     class="mt-4 w-80"
   >
   </div>
-
-  <Sidebar
-    @title="Create block"
-    @isOpen={{this.showAddEventDialog}}
-    @onClose={{set this 'showAddEventDialog' false}}
-  >
-    <div class='mt-5 flex flex-col gap-1'>
-      <label for="event-name">Name your block</label>
-      <Input
-        id="event-name"
-        autocomplete="off"
-        class="p-1 rounded-sm bg-white dark:bg-gray-800 dark:text-gray-50 border dark:border-gray-700 "
-        @type="text"
-        @value={{this.newEventTitle}}
-      />
-    </div>
-
-    <div class="mt-5">
-      <button
-        class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-        type="button"
-        {{on 'click' this.createEvent}}
-      >
-        Create
-      </button>
-    </div>
-  </Sidebar>
 </div>
+
+<Sidebar
+  @title="Create block"
+  @isOpen={{this.showAddEventDialog}}
+  @onClose={{set this 'showAddEventDialog' false}}
+>
+  <div class='mt-5 flex flex-col gap-1'>
+    <label for="event-name">Name your block</label>
+    <Input
+      id="event-name"
+      autocomplete="off"
+      class="p-1 rounded-sm bg-white dark:bg-gray-800 dark:text-gray-50 border dark:border-gray-700 "
+      @type="text"
+      @value={{this.newEventTitle}}
+    />
+  </div>
+
+  <div class="mt-5">
+    <button type="button" class="font-semibold" {{on 'click' this.createEvent}}>Create</button>
+  </div>
+</Sidebar>
+
+<Sidebar
+  @title="Edit block"
+  @isOpen={{this.showEditEventDialog}}
+  @onClose={{set this 'showEditEventDialog' false}}
+>
+  <div class='mt-5 flex flex-col gap-1'>
+    <label for="event-name">Name your block</label>
+    <Input
+      id="edit-event-name"
+      autocomplete="off"
+      class="p-1 rounded-sm bg-white dark:bg-gray-800 dark:text-gray-50 border dark:border-gray-700 "
+      @type="text"
+      @value={{this.selectedEvent.title}}
+    />
+  </div>
+
+  <div class="flex flex-row gap-2 mt-5">
+    <button type="button" class="font-semibold" {{on 'click' this.saveEvent}}>Save</button>
+    <button type="button" class="text-red-500" {{on 'click' this.deleteEvent}}>Delete</button>
+  </div>
+</Sidebar>
