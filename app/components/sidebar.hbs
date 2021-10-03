@@ -11,7 +11,10 @@
 
   <div class='fixed shadow-2xl bg-white dark:bg-gray-800 dark:text-gray-100 border-l dark:border-gray-700 inset-y-0 right-0 w-4/12 px-10 pt-4'>
     <dialog.Title class='text-lg font-medium text-gray-900 dark:text-gray-100 leading-6' @as='h3'>
-      {{@title}}
+      <div class="flex flex-row justify-between">
+        {{@title}}
+        <button type="button" {{on 'click' @onClose}}>&#x2715;</button>
+      </div>
     </dialog.Title>
     <dialog.Description class="text-sm text-gray-500 dark:text-gray-100">
       {{@description}}
