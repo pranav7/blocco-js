@@ -151,7 +151,7 @@ export default class Grid extends Component {
     let endDate = startDate.plus({ minutes: 30 });
 
     let event = this.store.createRecord('event', {
-      title: this.newEventTitle || 'New event',
+      title: this.newEventTitle || '(No title)',
       start: startDate.toJSDate(),
       end: endDate.toJSDate(),
       editable: true,
