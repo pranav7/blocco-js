@@ -40,23 +40,9 @@ export default class Grid extends Component {
     this.events.push(
       // fixed events
       this.store.createRecord('event', {
-        title: '☕️ Coffee + Prep',
-        startTime: '9:00',
-        endTime: '9:30',
-        daysOfWeek: [1, 2, 3, 4, 5],
-        color: '#2B4162',
-      }),
-      this.store.createRecord('event', {
         title: 'Standup',
         startTime: '9:30',
         endTime: '9:45',
-        daysOfWeek: [1, 2, 3, 4, 5],
-        color: '#2B4162',
-      }),
-      this.store.createRecord('event', {
-        title: '🍕 Lunch',
-        startTime: '12:30',
-        endTime: '13:30',
         daysOfWeek: [1, 2, 3, 4, 5],
         color: '#2B4162',
       }),
