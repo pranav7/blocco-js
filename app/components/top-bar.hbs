@@ -1,0 +1,25 @@
+<div class='grid justify-items-end'>
+  <button type='button' {{on 'click' (set this 'showSettingsDialog' true)}}>Settings</button>
+</div>
+
+<Sidebar
+  @title='Settings'
+  @isOpen={{this.showSettingsDialog}}
+  @onClose={{set this 'showSettingsDialog' false}}
+>
+  <div class='mt-5 flex flex-col gap-1'>
+    <label for='day-start'>Day start</label>
+    <select class='text-black' id='day-start' {{on 'change' this.saveDayStart}}>
+      {{#each this.hoursOfTheDay as |hour|}}
+        <option value={{hour}} selected={{eq this.gridConfig.dayStart hour}}>{{hour}}</option>
+      {{/each}}
+    </select>
+
+    <label for='day-end'>Day end</label>
+    <select class='text-black' id='day-end' {{on 'change' this.saveDayEnd}}>
+      {{#each this.hoursOfTheDay as |hour|}}
+        <option value={{hour}} selected={{eq this.gridConfig.dayEnd hour}}>{{hour}}</option>
+      {{/each}}
+    </select>
+  </div>
+</Sidebar>
