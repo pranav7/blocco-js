@@ -12,7 +12,11 @@
     </div>
   </div>
 
-  <div {{did-insert this.renderCalendar}} id='calendar' class='mt-4 w-80'></div>
+  <div
+    {{did-insert this.renderCalendar}}
+    id='calendar'
+    class='mt-4 {{if (eq @view 'day') 'w-80'}}'
+  ></div>
 </div>
 
 <Sidebar

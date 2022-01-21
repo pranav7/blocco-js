@@ -25,6 +25,7 @@ export default class Grid extends Component {
   constructor() {
     super(...arguments);
     this.gridConfig = this.store.peekAll('grid-config').firstObject;
+    console.log('Grid', this.gridConfig);
     this.args.events.map((event) => this.events.push(event.toJSON({ includeId: true })));
 
     this.events.push(
@@ -38,8 +39,8 @@ export default class Grid extends Component {
       }),
       this.store.createRecord('event', {
         title: 'Wrap up and shutdown',
-        startTime: '17:30',
-        endTime: '18:00',
+        startTime: '18:00',
+        endTime: '18:15',
         daysOfWeek: [1, 2, 3, 4, 5],
         color: '#2B4162',
       }),
@@ -51,7 +52,7 @@ export default class Grid extends Component {
     this.calendar = new Calendar(element, {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       headerToolbar: false,
-      initialView: 'timeGridDay',
+      initialView: this.viewConfig.view,
       height: 800,
       expandRows: true,
       editable: true,
@@ -59,7 +60,7 @@ export default class Grid extends Component {
       slotMinTime: this.gridConfig.dayStart,
       slotMaxTime: this.gridConfig.dayEnd,
       events: this.events,
-      dayHeaders: false,
+      dayHeaders: this.viewConfig.dayHeaders,
       defaultTimedEventDuration: '00:30',
       slotDuration: '00:15:00',
       dateClick: this.dateClick,
@@ -169,5 +170,16 @@ export default class Grid extends Component {
     this.calendarClickInfo = null;
     this.selectedEvent = null;
     this.newEventTitle = null;
+  }
+
+  get viewConfig() {
+    switch (this.args.view) {
+      case 'day':
+        return { view: 'timeGridDay', dayHeaders: false };
+      case 'week':
+        return { view: 'timeGridWeek', dayHeaders: true };
+      default:
+        return { view: 'timeGridDay', dayHeaders: false };
+    }
   }
 }
