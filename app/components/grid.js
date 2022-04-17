@@ -35,7 +35,7 @@ export default class Grid extends Component {
 
   constructor() {
     super(...arguments);
-    this.gridConfig = new GridConfig({ start: '9:00:00', end: '18:00:00' });
+    this.gridConfig = new GridConfig({ start: '9:00:00', end: '18:30:00' });
     this.args.events.map((event) => this.events.push(event.toJSON({ includeId: true })));
     this.events.push(
       // fixed events
