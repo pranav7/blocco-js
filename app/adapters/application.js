@@ -1,4 +1,7 @@
-// import JSONAPIAdapter from '@ember-data/adapter/json-api';
-// export default class ApplicationAdapter extends JSONAPIAdapter {}
+import RESTAdapter from '@ember-data/adapter/rest';
 
-export { default } from 'ember-local-storage/adapters/local';
+export default class ApplicationAdapter extends RESTAdapter {
+  host = 'http://localhost:3000';
+}
+
+// export { default } from 'ember-local-storage/adapters/local';

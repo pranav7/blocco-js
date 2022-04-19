@@ -35,25 +35,9 @@ export default class Grid extends Component {
 
   constructor() {
     super(...arguments);
+
     this.gridConfig = new GridConfig({ start: '9:00:00', end: '18:30:00' });
-    this.args.events.map((event) => this.events.push(event.toJSON({ includeId: true })));
-    this.events.push(
-      // fixed events
-      this.store.createRecord('event', {
-        title: 'Standup',
-        startTime: '9:30',
-        endTime: '9:45',
-        daysOfWeek: [1, 2, 3, 4, 5],
-        color: '#2B4162',
-      }),
-      this.store.createRecord('event', {
-        title: 'Wrap up and shutdown',
-        startTime: '17:30',
-        endTime: '18:00',
-        daysOfWeek: [1, 2, 3, 4, 5],
-        color: '#2B4162',
-      }),
-    );
+    this.args.events.map((event) => this.events.push(event));
   }
 
   @action
@@ -107,28 +91,32 @@ export default class Grid extends Component {
   @action
   eventClick(info) {
     this.calendarClickInfo = info;
-    this.selectedEvent = this.store.peekRecord('event', this.calendarClickInfo.event.id);
+    this.store
+      .findRecord('event', this.calendarClickInfo.event.id)
+      .then((event) => (this.selectedEvent = event));
     this.showEditEventDialog = true;
   }
 
   @action
   eventResize(info) {
-    let event = this.store.peekRecord('event', info.event.id);
-    event.end = event.endDate
-      .plus({
-        days: info.endDelta.days,
-        milliseconds: info.endDelta.milliseconds,
-      })
-      .toJSDate();
-    event.save();
+    this.store.findRecord('event', info.event.id).then((event) => {
+      event.end = event.endDate
+        .plus({
+          days: info.endDelta.days,
+          milliseconds: info.endDelta.milliseconds,
+        })
+        .toJSDate();
+      event.save();
+    });
   }
 
   @action
   eventDrop(info) {
-    let event = this.store.peekRecord('event', info.event.id);
-    event.start = event.startDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
-    event.end = event.endDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
-    event.save();
+    this.store.findRecord('event', info.event.id).then((event) => {
+      event.start = event.startDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
+      event.end = event.endDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
+      event.save();
+    });
   }
 
   @action
@@ -142,11 +130,12 @@ export default class Grid extends Component {
       end: endDate.toJSDate(),
       editable: true,
     });
-    event.save();
-    this.calendar.addEvent(event);
 
-    this.showAddEventDialog = false;
-    this._clearSessionFields();
+    event.save().then(() => {
+      this.calendar.addEvent(event);
+      this.showAddEventDialog = false;
+      this._clearSessionFields();
+    });
   }
 
   @action
