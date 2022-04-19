@@ -1,0 +1,13 @@
+<div class='flex flex-row justify-between items-start'>
+  <div>
+    <h1 class='text-3xl'>
+      <span class='font-bold'>{{this.today.date}} {{this.today.month}}</span>
+      <span class='font-light'>{{this.today.year}}</span>
+    </h1>
+    <h3 class='text-xl font-light'>{{this.today.day}}</h3>
+  </div>
+
+  <div class='grid justify-items-end'>
+    <button type='button' {{on 'click' this.syncTodaysEvents}}>Sync</button>
+  </div>
+</div>

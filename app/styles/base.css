@@ -3,3 +3,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.event-override {
+  border-left-width: 4px !important;
+  padding-left: 4px !important;
+}

@@ -129,6 +129,9 @@ export default class Grid extends Component {
       start: startDate.toJSDate(),
       end: endDate.toJSDate(),
       editable: true,
+      backgroundColor: '#e2f9ff',
+      borderColor: '#32a5e4',
+      textColor: '#32a5e4',
     });
 
     event.save().then(() => {
@@ -153,15 +156,6 @@ export default class Grid extends Component {
     this.selectedEvent.destroyRecord();
     this._clearSessionFields();
     this.showEditEventDialog = false;
-  }
-
-  get today() {
-    return {
-      date: this.currentDateTime.toFormat('d'),
-      month: this.currentDateTime.toFormat('LLLL'),
-      year: this.currentDateTime.toFormat('yyyy'),
-      day: this.currentDateTime.toFormat('cccc'),
-    };
   }
 
   _clearSessionFields() {
