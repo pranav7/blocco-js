@@ -100,7 +100,7 @@ export default class Grid extends Component {
   @action
   eventResize(info) {
     this.store.findRecord('event', info.event.id).then((event) => {
-      event.endAt = event.endDate
+      event.end = event.endDate
         .plus({
           days: info.endDelta.days,
           milliseconds: info.endDelta.milliseconds,
@@ -113,8 +113,8 @@ export default class Grid extends Component {
   @action
   eventDrop(info) {
     this.store.findRecord('event', info.event.id).then((event) => {
-      event.startAt = event.startDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
-      event.endAt = event.endDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
+      event.start = event.startDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
+      event.end = event.endDate.plus({ milliseconds: info.delta.milliseconds }).toJSDate();
       event.save();
     });
   }
@@ -126,16 +126,16 @@ export default class Grid extends Component {
 
     let event = this.store.createRecord('event', {
       title: this.newEventTitle || '(No title)',
-      startAt: startDate.toJSDate(),
-      endAt: endDate.toJSDate(),
+      start: startDate.toJSDate(),
+      end: endDate.toJSDate(),
       editable: true,
     });
 
-    event.save();
-    this.calendar.addEvent(event);
-
-    this.showAddEventDialog = false;
-    this._clearSessionFields();
+    event.save().then(() => {
+      this.calendar.addEvent(event);
+      this.showAddEventDialog = false;
+      this._clearSessionFields();
+    });
   }
 
   @action

@@ -9,26 +9,18 @@ export const EVENT_TYPES = {
 
 export default class EventModel extends Model {
   @attr('string') title;
-  @attr('date') startAt;
-  @attr('date') endAt;
+  @attr('date') start;
+  @attr('date') end;
   @attr('boolean', { defaultValue: false }) editable;
   @attr('boolean', { defaultValue: false }) allDay;
   @attr('number') eventType;
-  @attr('string') colorHex;
+  @attr('string') color;
 
   get startDate() {
-    return DateTime.fromJSDate(this.startAt);
+    return DateTime.fromJSDate(this.start);
   }
 
   get endDate() {
-    return DateTime.fromJSDate(this.endAt);
-  }
-
-  get start() {
-    return this.startAt;
-  }
-
-  get end() {
-    return this.endAt;
+    return DateTime.fromJSDate(this.end);
   }
 }
