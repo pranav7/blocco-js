@@ -8,6 +8,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
+import { eventTypes, eventTypeEmoji } from 'blocco-js/models/event';
+import { isPresent } from '@ember/utils';
 
 class GridConfig {
   @tracked start;
@@ -23,12 +25,13 @@ export default class Grid extends Component {
   @service store;
 
   gridConfig;
+  eventTypes = eventTypes;
 
   @tracked events = [];
   @tracked calendar;
   @tracked showAddEventDialog = false;
   @tracked showEditEventDialog = false;
-  @tracked newEventTitle;
+  @tracked newEventObject = {};
   @tracked calendarClickInfo;
   @tracked selectedEvent;
   @tracked currentDateTime = DateTime.local();
@@ -38,6 +41,10 @@ export default class Grid extends Component {
 
     this.gridConfig = new GridConfig({ start: '9:00:00', end: '18:30:00' });
     this.args.events.map((event) => this.events.push(event));
+    this.newEventObject = {
+      title: null,
+      eventType: eventTypes.default,
+    };
   }
 
   @action
@@ -124,14 +131,21 @@ export default class Grid extends Component {
     let startDate = DateTime.fromJSDate(this.calendarClickInfo.date);
     let endDate = startDate.plus({ minutes: 30 });
 
+    let title = null;
+    if (isPresent(eventTypeEmoji[this.newEventObject.eventType])) {
+      title =
+        `${eventTypeEmoji[this.newEventObject.eventType]} ${this.newEventObject.title}` ||
+        '(No title)';
+    } else {
+      title = this.newEventObject.title || '(No title)';
+    }
+
     let event = this.store.createRecord('event', {
-      title: this.newEventTitle || '(No title)',
+      title,
+      eventType: this.newEventObject.eventType,
       start: startDate.toJSDate(),
       end: endDate.toJSDate(),
       editable: true,
-      backgroundColor: '#e2f9ff',
-      borderColor: '#32a5e4',
-      textColor: '#32a5e4',
     });
 
     event.save().then(() => {
@@ -161,6 +175,9 @@ export default class Grid extends Component {
   _clearSessionFields() {
     this.calendarClickInfo = null;
     this.selectedEvent = null;
-    this.newEventTitle = null;
+    this.newEventObject = {
+      title: null,
+      eventType: eventTypes.default,
+    };
   }
 }

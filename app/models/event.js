@@ -1,10 +1,17 @@
 import Model, { attr } from '@ember-data/model';
 import { DateTime } from 'luxon';
 
-export const EVENT_TYPES = {
+export const eventTypes = {
   default: 0,
   focus: 1,
   outOfOffice: 2,
+  break: 3,
+};
+
+export const eventTypeEmoji = {
+  [eventTypes.focus]: '🎧',
+  [eventTypes.outOfOffice]: '🚫',
+  [eventTypes.break]: '🍕',
 };
 
 export default class EventModel extends Model {
