@@ -35,7 +35,7 @@
   <div class='mt-4'>
     <Textarea
       id='event-notes-create'
-      class='event__notes'
+      class='event__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md'
       @value={{this.newEventObject.notes}}
       rows='6'
     />
@@ -71,12 +71,24 @@
         <label for='focus-type'>🍕 Break</label>
       </div>
     </div>
-    <div>
-      <button
-        type='button'
-        class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 font-semibold'
-        {{on 'click' this.createEvent}}
-      >Create</button>
+    <div class='flex flex-row gap-2 items-center'>
+      <div class='flex flex-row items-center gap-1'>
+        <Input
+          @type='checkbox'
+          name="'event-all-day"
+          {{on 'click' (set this.newEventObject 'allDay' (eq this.newEventObject.allDay false))}}
+        />
+        <label for='event-all-day'>All day</label>
+      </div>
+      <div>
+        <button
+          type='button'
+          class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-700 font-semibold'
+          {{on 'click' this.createEvent}}
+        >
+          Create
+        </button>
+      </div>
     </div>
   </div>
 </Sidebar>
@@ -100,7 +112,7 @@
   <div class='mt-4'>
     <Textarea
       id='event-notes-edit'
-      class='event__notes'
+      class='event__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md'
       @value={{this.selectedEvent.notes}}
       rows='6'
     />
@@ -109,7 +121,7 @@
   <div class='flex flex-row gap-2 mt-5'>
     <button
       type='button'
-      class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 font-semibold'
+      class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-700 font-semibold'
       {{on 'click' this.saveEvent}}
     >Save</button>
     <button

@@ -14,10 +14,5 @@ body {
 }
 
 .event__notes {
-  width: 100%;
-  padding: 4px;
-  background-color: #fffdec;
-  border-radius: 8px;
-  border: 1px solid #efeabc;
   height: 40vh;
 }
