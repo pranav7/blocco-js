@@ -22,12 +22,11 @@
   @onClose={{set this 'showAddEventDialog' false}}
 >
   <div class='mt-5 flex flex-col gap-1'>
-    <Input
+    <Textarea
       id='event-name'
       autocomplete='off'
       placeholder='Name your block'
-      class='text-xl p-1 rounded-md bg-white dark:bg-gray-700 dark:text-gray-50 border-0'
-      @type='text'
+      class='text-xl p-1 rounded-md bg-white dark:bg-gray-800 dark:text-gray-50 border-0 resize-none'
       @value={{this.newEventObject.title}}
     />
   </div>
@@ -99,21 +98,23 @@
   @onClose={{set this 'showEditEventDialog' false}}
 >
   <div class='mt-5 flex flex-col gap-1'>
-    <p class='text-xs text-gray-600 dark:text-gray-400'>
-      Created by
-      <strong>{{this.selectedEvent.creator}}</strong>
-    </p>
-    <Input
+    {{#if this.selectedEvent.isExternal}}
+      <p class='text-xs text-gray-600 dark:text-gray-400'>
+        Created by
+        <strong>{{this.selectedEvent.creator}}</strong>
+      </p>
+    {{/if}}
+    <Textarea
       id='edit-event-name'
       autocomplete='off'
-      class='text-xl p-1 rounded-md bg-white dark:bg-gray-700 dark:text-gray-50 border-0'
+      class='text-xl p-1 rounded-md bg-white dark:bg-gray-800 dark:text-gray-50 border-0 resize-none'
       placeholder='Name your block'
-      @type='text'
+      rows='2'
       @value={{this.selectedEvent.title}}
     />
     <div>
       <a
-        class='text-sm text-gray-600 dark:text-gray-400'
+        class='text-sm text-gray-600 hover:text-blue-500 dark:text-gray-400 dark:hover:text-gray-500'
         href={{this.selectedEvent.meetingLink}}
       >{{this.selectedEvent.meetingLink}}</a>
     </div>
