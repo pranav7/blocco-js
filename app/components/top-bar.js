@@ -18,9 +18,27 @@ export default class TopBar extends Component {
   }
 
   @action
+  syncTomorrowsEvents() {
+    console.log('syncing...');
+    fetch('http://localhost:3000/google_calendar/sync_events', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        time_min: DateTime.local().plus({ days: 1 }).startOf('day').toISO(),
+        time_max: DateTime.local().plus({ days: 1 }).endOf('day').toISO(),
+      }),
+    }).then((response) => {
+      console.log('sycning finished', response);
+      this.store.findAll('event');
+    });
+  }
+
+  @action
   syncTodaysEvents() {
     console.log('syncing...');
-    fetch('http://localhost:3000/google_calendar/sync_todays_events', {
+    fetch('http://localhost:3000/google_calendar/sync_events', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
