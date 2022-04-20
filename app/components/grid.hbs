@@ -22,11 +22,11 @@
   @onClose={{set this 'showAddEventDialog' false}}
 >
   <div class='mt-5 flex flex-col gap-1'>
-    <label for='event-name'>Name your block</label>
     <Input
       id='event-name'
       autocomplete='off'
-      class='p-1 rounded-sm bg-white dark:bg-gray-800 dark:text-gray-50 border dark:border-gray-700'
+      placeholder='Name your block'
+      class='text-xl p-1 rounded-md bg-white dark:bg-gray-700 dark:text-gray-50 border-0'
       @type='text'
       @value={{this.newEventObject.title}}
     />
@@ -99,14 +99,24 @@
   @onClose={{set this 'showEditEventDialog' false}}
 >
   <div class='mt-5 flex flex-col gap-1'>
-    <label for='event-name'>Name your block</label>
+    <p class='text-xs text-gray-600 dark:text-gray-400'>
+      Created by
+      <strong>{{this.selectedEvent.creator}}</strong>
+    </p>
     <Input
       id='edit-event-name'
       autocomplete='off'
-      class='p-1 rounded-sm bg-white dark:bg-gray-800 dark:text-gray-50 border dark:border-gray-700'
+      class='text-xl p-1 rounded-md bg-white dark:bg-gray-700 dark:text-gray-50 border-0'
+      placeholder='Name your block'
       @type='text'
       @value={{this.selectedEvent.title}}
     />
+    <div>
+      <a
+        class='text-sm text-gray-600 dark:text-gray-400'
+        href={{this.selectedEvent.meetingLink}}
+      >{{this.selectedEvent.meetingLink}}</a>
+    </div>
   </div>
 
   <div class='mt-4'>

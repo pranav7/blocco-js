@@ -1,4 +1,5 @@
 import Model, { attr } from '@ember-data/model';
+import { isPresent } from '@ember/utils';
 import { DateTime } from 'luxon';
 
 export const eventTypes = {
@@ -26,6 +27,13 @@ export default class EventModel extends Model {
   @attr('string') borderColor;
   @attr('string') textColor;
   @attr('string') notes;
+  @attr('string') googleEventId;
+  @attr('string') meetingLink;
+  @attr('string') creator;
+
+  get isExternal() {
+    return isPresent(this.googleEventId);
+  }
 
   get startDate() {
     return DateTime.fromJSDate(this.start);
