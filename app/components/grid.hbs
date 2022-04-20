@@ -1,6 +1,6 @@
 <div class='px-10 py-2'>
   <div class='flex flex-col'>
-    <TopBar />
+    <TopBar @view={{@view}} />
     <div class='flex flex-row gap-2 mt-4'>
       <button type='button' {{on 'click' this.previousDay}}>&#x2190;</button>
       <button type='button' {{on 'click' this.moveToToday}}>today</button>
@@ -8,7 +8,11 @@
     </div>
   </div>
 
-  <div {{did-insert this.renderCalendar}} id='calendar' class='mt-4 w-80 calendar__container'>
+  <div
+    {{did-insert this.renderCalendar}}
+    id='calendar'
+    class='mt-4 {{if (eq @view 'timeGridDay') 'w-80' 'w-full'}} calendar__container'
+  >
   </div>
 </div>
 
@@ -25,6 +29,15 @@
       class='p-1 rounded-sm bg-white dark:bg-gray-800 dark:text-gray-50 border dark:border-gray-700'
       @type='text'
       @value={{this.newEventObject.title}}
+    />
+  </div>
+
+  <div class='mt-4'>
+    <Textarea
+      id='event-notes-create'
+      class='event__notes'
+      @value={{this.newEventObject.notes}}
+      rows='6'
     />
   </div>
 
@@ -58,16 +71,13 @@
         <label for='focus-type'>🍕 Break</label>
       </div>
     </div>
-    <button type='button' class='font-semibold' {{on 'click' this.createEvent}}>Create</button>
-  </div>
-
-  <div class='mt-4'>
-    <Textarea
-      id='event-notes-create'
-      class='event__notes'
-      @value={{this.newEventObject.notes}}
-      rows='6'
-    />
+    <div>
+      <button
+        type='button'
+        class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 font-semibold'
+        {{on 'click' this.createEvent}}
+      >Create</button>
+    </div>
   </div>
 </Sidebar>
 
@@ -97,7 +107,15 @@
   </div>
 
   <div class='flex flex-row gap-2 mt-5'>
-    <button type='button' class='font-semibold' {{on 'click' this.saveEvent}}>Save</button>
-    <button type='button' class='text-red-500' {{on 'click' this.deleteEvent}}>Delete</button>
+    <button
+      type='button'
+      class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 font-semibold'
+      {{on 'click' this.saveEvent}}
+    >Save</button>
+    <button
+      type='button'
+      class='px-2 py-1 rounded-md bg-red-100 hover:bg-red-200 text-red-600'
+      {{on 'click' this.deleteEvent}}
+    >Delete</button>
   </div>
 </Sidebar>

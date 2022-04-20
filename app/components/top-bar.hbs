@@ -1,4 +1,4 @@
-<div class='flex flex-row justify-between items-start'>
+<div class='flex flex-row justify-between items-start mt-4'>
   <div>
     <h1 class='text-3xl'>
       <span class='font-bold'>{{this.today.date}} {{this.today.month}}</span>
@@ -7,9 +7,31 @@
     <h3 class='text-xl font-light'>{{this.today.day}}</h3>
   </div>
 
-  <div class='flex flex-row justify-items-end gap-2'>
-    Sync:
-    <button type='button' {{on 'click' this.syncTodaysEvents}}>Today</button>
-    <button type='button' {{on 'click' this.syncTomorrowsEvents}}>Tomorrow</button>
+  <div class='flex flex-row justify-items-end items-center gap-2'>
+    <div>
+      {{#if (eq @view 'timeGridWeek')}}
+        <LinkTo
+          @route='index'
+          class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200'
+        >Day</LinkTo>
+      {{else}}
+        <LinkTo
+          @route='week'
+          class='px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200'
+        >Week</LinkTo>
+      {{/if}}
+      <span class='text-gray-300'>|</span>
+      <button
+        type='button'
+        class='px-2 py-0.5 rounded-md bg-gray-100 hover:bg-gray-200'
+        {{on 'click' this.syncTodaysEvents}}
+      >Sync Today</button>
+      <span class='text-gray-300'>|</span>
+      <button
+        type='button'
+        class='px-2 py-0.5 rounded-md bg-gray-100 hover:bg-gray-200'
+        {{on 'click' this.syncTomorrowsEvents}}
+      >Sync Tomorrow</button>
+    </div>
   </div>
 </div>

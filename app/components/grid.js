@@ -53,7 +53,7 @@ export default class Grid extends Component {
     this.calendar = new Calendar(element, {
       plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
       headerToolbar: false,
-      initialView: 'timeGridDay',
+      initialView: this.args.view,
       height: 800,
       expandRows: true,
       editable: true,
@@ -61,7 +61,7 @@ export default class Grid extends Component {
       slotMinTime: this.gridConfig.start,
       slotMaxTime: this.gridConfig.end,
       events: this.events,
-      dayHeaders: false,
+      dayHeaders: this.args.dayHeaders,
       defaultTimedEventDuration: '00:30',
       slotDuration: '00:15:00',
       dateClick: this.dateClick,
