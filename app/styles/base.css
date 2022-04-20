@@ -4,7 +4,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.event-override {
+.calendar__container {
+  height: 90vh !important;
+}
+
+.event__override {
   border-left-width: 4px !important;
   padding-left: 4px !important;
+}
+
+.event__notes {
+  width: 100%;
+  padding: 4px;
+  background-color: #fffdec;
+  border-radius: 8px;
+  border: 1px solid #efeabc;
+  height: 40vh;
 }

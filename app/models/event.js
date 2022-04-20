@@ -25,6 +25,7 @@ export default class EventModel extends Model {
   @attr('string') backgroundColor;
   @attr('string') borderColor;
   @attr('string') textColor;
+  @attr('string') notes;
 
   get startDate() {
     return DateTime.fromJSDate(this.start);
@@ -35,6 +36,6 @@ export default class EventModel extends Model {
   }
 
   get classNames() {
-    return ['event-override'];
+    return ['event__override'];
   }
 }

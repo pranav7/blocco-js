@@ -44,6 +44,7 @@ export default class Grid extends Component {
     this.newEventObject = {
       title: null,
       eventType: eventTypes.default,
+      notes: '',
     };
   }
 
@@ -146,6 +147,7 @@ export default class Grid extends Component {
       start: startDate.toJSDate(),
       end: endDate.toJSDate(),
       editable: true,
+      notes: this.newEventObject.notes,
     });
 
     event.save().then(() => {
@@ -178,6 +180,7 @@ export default class Grid extends Component {
     this.newEventObject = {
       title: null,
       eventType: eventTypes.default,
+      notes: '',
     };
   }
 }

@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <div {{did-insert this.renderCalendar}} id='calendar' class='mt-4 w-80'>
+  <div {{did-insert this.renderCalendar}} id='calendar' class='mt-4 w-80 calendar__container'>
   </div>
 </div>
 
@@ -60,6 +60,15 @@
     </div>
     <button type='button' class='font-semibold' {{on 'click' this.createEvent}}>Create</button>
   </div>
+
+  <div class='mt-4'>
+    <Textarea
+      id='event-notes-create'
+      class='event__notes'
+      @value={{this.newEventObject.notes}}
+      rows='6'
+    />
+  </div>
 </Sidebar>
 
 <Sidebar
@@ -75,6 +84,15 @@
       class='p-1 rounded-sm bg-white dark:bg-gray-800 dark:text-gray-50 border dark:border-gray-700'
       @type='text'
       @value={{this.selectedEvent.title}}
+    />
+  </div>
+
+  <div class='mt-4'>
+    <Textarea
+      id='event-notes-edit'
+      class='event__notes'
+      @value={{this.selectedEvent.notes}}
+      rows='6'
     />
   </div>
 
