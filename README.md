@@ -3,21 +3,16 @@
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
 
-## Prerequisites
+## Product Screenshots
 
-You will need the following things properly installed on your computer.
+**Day view**
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/)
-* [Yarn](https://yarnpkg.com/)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+![2022-04-21 at 11 13 am](https://user-images.githubusercontent.com/1835120/164433397-616dff6f-4a22-4dad-aaca-1ad720380e01.png)
 
-## Installation
+**Week view**
 
-* `git clone <repository-url>` this repository
-* `cd blocco-js`
-* `yarn install`
+![2022-04-21 at 11 12 am](https://user-images.githubusercontent.com/1835120/164433265-6ea9a919-08b4-4dfa-aa68-c6da2c7e4e7c.png)
+
 
 ## Running / Development
 
