@@ -8,7 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
-import { eventTypes, eventTypeEmoji } from 'blocco-js/models/event';
+import { eventTypes, eventTypeEmoji, eventTypeColors } from 'blocco-js/models/event';
 import { isPresent } from '@ember/utils';
 
 class GridConfig {
@@ -20,14 +20,6 @@ class GridConfig {
     this.end = end;
   }
 }
-
-const eventTypeColors = {
-  [eventTypes.break]: {
-    backgroundColor: '#e2f9ff',
-    borderColor: '#32a5e4',
-    textColor: '#227aaa',
-  },
-};
 
 export default class Grid extends Component {
   @service store;

@@ -15,6 +15,14 @@ export const eventTypeEmoji = {
   [eventTypes.break]: '🍕',
 };
 
+export const eventTypeColors = {
+  [eventTypes.break]: {
+    backgroundColor: '#e2f9ff',
+    borderColor: '#3788d8',
+    textColor: '#346da5',
+  },
+};
+
 export default class EventModel extends Model {
   @attr('string') title;
   @attr('date') start;
