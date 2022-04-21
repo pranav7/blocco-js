@@ -26,7 +26,7 @@
       id='event-name'
       autocomplete='off'
       placeholder='Name your block'
-      class='text-xl p-1 rounded-md bg-white dark:bg-gray-800 dark:text-gray-50 border-0 resize-none'
+      class='text-xl rounded-md bg-white dark:bg-gray-800 dark:text-gray-50 border-0 resize-none'
       @value={{this.newEventObject.title}}
     />
   </div>
@@ -34,7 +34,7 @@
   <div class='mt-4'>
     <Textarea
       id='event-notes-create'
-      class='event__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md'
+      class='event__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md resize-none'
       @value={{this.newEventObject.notes}}
       rows='6'
     />
@@ -107,7 +107,7 @@
     <Textarea
       id='edit-event-name'
       autocomplete='off'
-      class='text-xl p-1 rounded-md bg-white dark:bg-gray-800 dark:text-gray-50 border-0 resize-none'
+      class='text-xl rounded-md bg-white dark:bg-gray-800 dark:text-gray-50 border-0 resize-none'
       placeholder='Name your block'
       rows='2'
       @value={{this.selectedEvent.title}}
@@ -124,7 +124,7 @@
   <div class='mt-4'>
     <Textarea
       id='event-notes-edit'
-      class='event__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md'
+      class='event__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md resize-none'
       @value={{this.selectedEvent.notes}}
       rows='6'
     />
