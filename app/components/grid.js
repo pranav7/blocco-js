@@ -21,6 +21,14 @@ class GridConfig {
   }
 }
 
+const eventTypeColors = {
+  [eventTypes.break]: {
+    backgroundColor: '#e2f9ff',
+    borderColor: '#32a5e4',
+    textColor: '#227aaa',
+  },
+};
+
 export default class Grid extends Component {
   @service store;
 
@@ -150,6 +158,9 @@ export default class Grid extends Component {
       editable: true,
       notes: this.newEventObject.notes,
       allDay: this.newEventObject.allDay,
+      backgroundColor: eventTypeColors[this.newEventObject.eventType]?.backgroundColor,
+      borderColor: eventTypeColors[this.newEventObject.eventType]?.borderColor,
+      textColor: eventTypeColors[this.newEventObject.eventType]?.textColor,
     });
 
     event.save().then(() => {
