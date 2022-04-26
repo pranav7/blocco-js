@@ -13,6 +13,10 @@ A short introduction of this app could easily go here.
 
 ![2022-04-21 at 11 12 am](https://user-images.githubusercontent.com/1835120/164433265-6ea9a919-08b4-4dfa-aa68-c6da2c7e4e7c.png)
 
+**Dark Mode**
+
+![2022-04-26 at 11 18 pm](https://user-images.githubusercontent.com/1835120/165402012-dc1afbbb-a898-42bb-97e0-7b094a1a6de0.png)
+
 
 ## Running / Development
 
