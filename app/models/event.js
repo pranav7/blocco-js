@@ -1,4 +1,6 @@
 import Model, { attr } from '@ember-data/model';
+import { array } from 'ember-data-model-fragments/attributes';
+
 import { isPresent } from '@ember/utils';
 import { DateTime } from 'luxon';
 
@@ -38,6 +40,7 @@ export default class EventModel extends Model {
   @attr('string') googleEventId;
   @attr('string') meetingLink;
   @attr('string') creator;
+  @array('string') attendees;
 
   get isExternal() {
     return isPresent(this.googleEventId);
