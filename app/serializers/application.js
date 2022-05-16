@@ -10,4 +10,13 @@ export default class ApplicationSerializer extends RESTSerializer {
   keyForAttribute(attr) {
     return underscore(attr);
   }
+
+  keyForRelationship(attr) {
+    return underscore(attr);
+  }
+
+  serializeIntoHash(data, type, snapshot, options) {
+    let root = underscore(type.modelName);
+    data[root] = this.serialize(snapshot, options);
+  }
 }

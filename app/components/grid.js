@@ -35,6 +35,7 @@ export default class Grid extends Component {
   @tracked calendarClickInfo;
   @tracked selectedEvent;
   @tracked currentDateTime = DateTime.local();
+  @tracked weeklyNotes;
 
   constructor() {
     super(...arguments);
@@ -77,18 +78,21 @@ export default class Grid extends Component {
   previousDay() {
     this.currentDateTime = this.currentDateTime.plus({ day: -1 });
     this.calendar.prev();
+    this.fetchWeeklyNotes();
   }
 
   @action
   nextDay() {
     this.currentDateTime = this.currentDateTime.plus({ day: 1 });
     this.calendar.next();
+    this.fetchWeeklyNotes();
   }
 
   @action
   moveToToday() {
     this.currentDateTime = DateTime.local();
     this.calendar.today();
+    this.fetchWeeklyNotes();
   }
 
   @action
@@ -177,6 +181,34 @@ export default class Grid extends Component {
     this.selectedEvent.destroyRecord();
     this._clearSessionFields();
     this.showEditEventDialog = false;
+  }
+
+  @action
+  fetchWeeklyNotes() {
+    let startOfWeek = this.currentDateTime.startOf('week');
+    let endOfWeek = this.currentDateTime.endOf('week');
+    this.store
+      .queryRecord('weekly-note', {
+        start_date: startOfWeek.toISODate(),
+        end_date: endOfWeek.toISODate(),
+      })
+      .then((notes) => {
+        if (isPresent(notes)) {
+          this.weeklyNotes = notes;
+        } else {
+          this.weeklyNotes = this.store.createRecord('weekly-note', {
+            startDate: startOfWeek.toISODate(),
+            endDate: endOfWeek.toISODate(),
+          });
+          this.weeklyNotes.save();
+        }
+      });
+  }
+
+  @action
+  saveWeeklyNotes() {
+    console.log('saving weekly notes', this.weeklyNotes.notes);
+    this.weeklyNotes.save();
   }
 
   _clearSessionFields() {
