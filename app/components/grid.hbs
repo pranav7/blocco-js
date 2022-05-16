@@ -1,18 +1,34 @@
 <div class='px-10 py-2'>
   <div class='flex flex-col'>
-    <TopBar @view={{@view}} />
-    <div class='flex flex-row gap-2 mt-4'>
-      <button type='button' {{on 'click' this.previousDay}}>&#x2190;</button>
-      <button type='button' {{on 'click' this.moveToToday}}>today</button>
-      <button type='button' {{on 'click' this.nextDay}}>&#x2192;</button>
-    </div>
+    <TopBar @view={{@view}} @currentDateTime={{this.currentDateTime}} />
   </div>
 
-  <div
-    {{did-insert this.renderCalendar}}
-    id='calendar'
-    class='mt-4 {{if (eq @view 'timeGridDay') 'w-80' 'w-full'}} calendar__container'
-  >
+  <div class='grid grid-cols-2 gap-4'>
+    <div class='col-span-1 gap-4'>
+      <div class='flex flex-row gap-2 my-4'>
+        <button type='button' {{on 'click' this.previousDay}}>&#x2190;</button>
+        <button type='button' {{on 'click' this.moveToToday}}>today</button>
+        <button type='button' {{on 'click' this.nextDay}}>&#x2192;</button>
+      </div>
+      <div
+        {{did-insert this.renderCalendar}}
+        id='calendar'
+        class='{{if (eq @view 'timeGridDay') 'w-80' 'w-full'}} calendar__container'
+      >
+      </div>
+    </div>
+
+    <div class='col-span-1 flex flex-col gap-4'>
+      <div><h3 class='text-xl'>This week</h3></div>
+      <div class='h-full' {{did-insert this.fetchWeeklyNotes}}>
+        <Textarea
+          {{on 'blur' this.saveWeeklyNotes}}
+          id='week-notes-create'
+          class='week__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md resize-none max-w-xl h-full'
+          @value={{this.weeklyNotes.notes}}
+        />
+      </div>
+    </div>
   </div>
 </div>
 

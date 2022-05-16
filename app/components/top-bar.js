@@ -1,19 +1,17 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
 
 export default class TopBar extends Component {
   @service store;
-  @tracked currentDateTime = DateTime.local();
 
   get today() {
     return {
-      date: this.currentDateTime.toFormat('d'),
-      month: this.currentDateTime.toFormat('LLLL'),
-      year: this.currentDateTime.toFormat('yyyy'),
-      day: this.currentDateTime.toFormat('cccc'),
+      date: this.args.currentDateTime.toFormat('d'),
+      month: this.args.currentDateTime.toFormat('LLLL'),
+      year: this.args.currentDateTime.toFormat('yyyy'),
+      day: this.args.currentDateTime.toFormat('cccc'),
     };
   }
 
