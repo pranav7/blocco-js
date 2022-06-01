@@ -11,6 +11,8 @@ import { DateTime } from 'luxon';
 import { eventTypes, eventTypeEmoji, eventTypeColors } from 'blocco-js/models/event';
 import { isPresent } from '@ember/utils';
 
+const ignoredTargetTypes = ['textarea', 'input'];
+
 class GridConfig {
   @tracked start;
   @tracked end;
@@ -23,6 +25,7 @@ class GridConfig {
 
 export default class Grid extends Component {
   @service store;
+  @service router;
 
   gridConfig;
   eventTypes = eventTypes;
@@ -207,8 +210,34 @@ export default class Grid extends Component {
 
   @action
   saveWeeklyNotes() {
-    console.log('saving weekly notes', this.weeklyNotes.notes);
     this.weeklyNotes.save();
+  }
+
+  @action
+  registerKeypressListener() {
+    document.addEventListener('keydown', (event) => {
+      if (ignoredTargetTypes.includes(event.target.type)) {
+        return;
+      }
+
+      switch (event.key) {
+        case '[':
+          this.previousDay();
+          break;
+        case ']':
+          this.nextDay();
+          break;
+        case '.':
+          this.moveToToday();
+          break;
+        case 'd':
+          this.router.transitionTo('index');
+          break;
+        case 'w':
+          this.router.transitionTo('week');
+          break;
+      }
+    });
   }
 
   _clearSessionFields() {
