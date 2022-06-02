@@ -216,6 +216,7 @@ export default class Grid extends Component {
   @action
   registerKeypressListener() {
     document.addEventListener('keydown', (event) => {
+      console.log(event);
       if (ignoredTargetTypes.includes(event.target.type)) {
         return;
       }
@@ -235,6 +236,9 @@ export default class Grid extends Component {
           break;
         case 'w':
           this.router.transitionTo('week');
+          break;
+        case 'r':
+          location.reload();
           break;
       }
     });
