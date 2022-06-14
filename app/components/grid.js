@@ -8,7 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
-import { eventTypes, eventTypeEmoji, eventTypeColors } from 'blocco-js/models/event';
+import { eventTypes, eventTypeNames, eventTypeColors } from 'blocco-js/models/event';
 import { isPresent } from '@ember/utils';
 
 const ignoredTargetTypes = ['textarea', 'input'];
@@ -29,6 +29,7 @@ export default class Grid extends Component {
 
   gridConfig;
   eventTypes = eventTypes;
+  eventTypeNames = eventTypeNames;
 
   @tracked events = [];
   @tracked calendar;
@@ -140,10 +141,13 @@ export default class Grid extends Component {
     let startDate = DateTime.fromJSDate(this.calendarClickInfo.date);
     let endDate = startDate.plus({ minutes: 30 });
 
-    let title = null;
-    if (isPresent(eventTypeEmoji[this.newEventObject.eventType])) {
+    let title = '';
+    if (
+      isPresent(eventTypeNames[this.newEventObject.eventType]) &&
+      this.newEventObject.eventType !== eventTypes.default
+    ) {
       title =
-        `${eventTypeEmoji[this.newEventObject.eventType]} ${this.newEventObject.title}` ||
+        `${eventTypeNames[this.newEventObject.eventType]}: ${this.newEventObject.title}` ||
         '(No title)';
     } else {
       title = this.newEventObject.title || '(No title)';

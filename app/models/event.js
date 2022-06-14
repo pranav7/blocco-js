@@ -9,12 +9,15 @@ export const eventTypes = {
   focus: 1,
   outOfOffice: 2,
   break: 3,
+  meeting: 4,
 };
 
-export const eventTypeEmoji = {
-  [eventTypes.focus]: '🎧',
-  [eventTypes.outOfOffice]: '🚫',
-  [eventTypes.break]: '🍕',
+export const eventTypeNames = {
+  [eventTypes.default]: 'Default',
+  [eventTypes.focus]: '🎧 Focus',
+  [eventTypes.outOfOffice]: '🚫 OOO',
+  [eventTypes.break]: '🍕 Break',
+  [eventTypes.meeting]: '💬 Meeting',
 };
 
 export const eventTypeColors = {
@@ -22,6 +25,16 @@ export const eventTypeColors = {
     backgroundColor: '#e2f9ff',
     borderColor: '#3788d8',
     textColor: '#346da5',
+  },
+  [eventTypes.outOfOffice]: {
+    backgroundColor: '#e2f9ff',
+    borderColor: '#3788d8',
+    textColor: '#346da5',
+  },
+  [eventTypes.meeting]: {
+    backgroundColor: '#ffcdb3',
+    borderColor: '#fe7032',
+    textColor: '#ca3800',
   },
 };
 

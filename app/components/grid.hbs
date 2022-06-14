@@ -26,7 +26,7 @@
         <Textarea
           {{on 'blur' this.saveWeeklyNotes}}
           id='week-notes-create'
-          class='week__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md resize-none max-w-xl h-full'
+          class='week__notes bg-yellow-50 dark:bg-gray-700 w-full p-2 rounded-md resize-none max-w-2xl h-full'
           @value={{this.weeklyNotes.notes}}
         />
       </div>
@@ -56,33 +56,19 @@
 
   <div class='flex flex-row justify-between mt-5'>
     <div class='flex flex-col'>
-      <div class='flex flex-row items-center gap-1'>
-        <Input
-          name="'event-type"
-          @type='radio'
-          @checked={{eq this.newEventObject.eventType this.eventTypes.default}}
-          {{on 'click' (set this.newEventObject 'eventType' this.eventTypes.default)}}
-        />
-        <label for='focus-type'>Default</label>
-      </div>
-      <div class='flex flex-row items-center gap-1'>
-        <Input
-          name="'event-type"
-          @type='radio'
-          @checked={{eq this.newEventObject.eventType this.eventTypes.focus}}
-          {{on 'click' (set this.newEventObject 'eventType' this.eventTypes.focus)}}
-        />
-        <label for='focus-type'>🎧 Focus</label>
-      </div>
-      <div class='flex flex-row items-center gap-1'>
-        <Input
-          name="'event-type"
-          @type='radio'
-          @checked={{eq this.newEventObject.eventType this.eventTypes.break}}
-          {{on 'click' (set this.newEventObject 'eventType' this.eventTypes.break)}}
-        />
-        <label for='focus-type'>🍕 Break</label>
-      </div>
+      {{log this.eventTypes}}
+
+      {{#each-in this.eventTypes as |eventTypeName eventTypeValue|}}
+        <div class='flex flex-row items-center gap-1'>
+          <Input
+            name="'event-type"
+            @type='radio'
+            @checked={{eq this.newEventObject.eventType eventTypeValue}}
+            {{on 'click' (set this.newEventObject 'eventType' eventTypeValue)}}
+          />
+          <label for='focus-type'>{{get this.eventTypeNames eventTypeValue}}</label>
+        </div>
+      {{/each-in}}
     </div>
     <div class='flex flex-row gap-2 items-center'>
       <div class='flex flex-row items-center gap-1'>
