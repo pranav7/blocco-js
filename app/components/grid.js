@@ -40,6 +40,7 @@ export default class Grid extends Component {
   @tracked selectedEvent;
   @tracked currentDateTime = DateTime.local();
   @tracked weeklyNotes;
+  @tracked shutdownStatus;
 
   constructor() {
     super(...arguments);
@@ -83,6 +84,7 @@ export default class Grid extends Component {
     this.currentDateTime = this.currentDateTime.plus({ day: -1 });
     this.calendar.prev();
     this.fetchWeeklyNotes();
+    this.fetchShutdownStatus();
   }
 
   @action
@@ -90,6 +92,7 @@ export default class Grid extends Component {
     this.currentDateTime = this.currentDateTime.plus({ day: 1 });
     this.calendar.next();
     this.fetchWeeklyNotes();
+    this.fetchShutdownStatus();
   }
 
   @action
@@ -97,6 +100,7 @@ export default class Grid extends Component {
     this.currentDateTime = DateTime.local();
     this.calendar.today();
     this.fetchWeeklyNotes();
+    this.fetchShutdownStatus();
   }
 
   @action
@@ -215,6 +219,33 @@ export default class Grid extends Component {
   @action
   saveWeeklyNotes() {
     this.weeklyNotes.save();
+  }
+
+  @action
+  fetchShutdownStatus() {
+    console.log('fetching shutdown status', { created_at: this.currentDateTime.toISODate() });
+    this.store
+      .queryRecord('shutdown-status', {
+        created_at: this.currentDateTime.toISODate(),
+      })
+      .then((response) => {
+        if (isPresent(response)) {
+          console.log('found shutdown status', response);
+          this.shutdownStatus = response;
+        } else {
+          console.log('creating shutdown status', { created_at: this.currentDateTime.toISODate() });
+          this.shutdownStatus = this.store.createRecord('shutdown-status', {
+            createdAt: this.currentDateTime.toISODate(),
+          });
+          this.shutdownStatus.save();
+        }
+      });
+  }
+
+  @action
+  toggleShutdownStatus() {
+    this.shutdownStatus.complete = !this.shutdownStatus.complete;
+    this.shutdownStatus.save();
   }
 
   @action
