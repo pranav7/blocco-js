@@ -275,6 +275,9 @@ export default class Grid extends Component {
         case 'r':
           location.reload();
           break;
+        case 'c':
+          this.toggleShutdownStatus();
+          break;
       }
     });
   }
