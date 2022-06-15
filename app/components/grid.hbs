@@ -11,6 +11,18 @@
         <button type='button' {{on 'click' this.previousDay}}>&#x2190;</button>
         <button type='button' {{on 'click' this.moveToToday}}>today</button>
         <button type='button' {{on 'click' this.nextDay}}>&#x2192;</button>
+
+        {{#if (eq @view 'timeGridDay')}}
+          <div class='ml-24' {{did-insert this.fetchShutdownStatus}}>
+            <Input
+              id='shutdown-complete'
+              @type='checkbox'
+              @checked={{this.shutdownStatus.complete}}
+              {{on 'click' this.toggleShutdownStatus}}
+            />
+            <label for='shutdown-complete'>Shutdown complete</label>
+          </div>
+        {{/if}}
       </div>
       <div
         {{did-insert this.renderCalendar}}
