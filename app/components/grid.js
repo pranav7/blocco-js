@@ -111,6 +111,7 @@ export default class Grid extends Component {
     this.currentDateTime = this.currentDateTime.plus({ day: -1 });
     this.calendar.prev();
     this.fetchWeeklyNotes();
+    this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
@@ -119,6 +120,7 @@ export default class Grid extends Component {
     this.currentDateTime = this.currentDateTime.plus({ day: 1 });
     this.calendar.next();
     this.fetchWeeklyNotes();
+    this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
@@ -127,6 +129,7 @@ export default class Grid extends Component {
     this.currentDateTime = DateTime.local();
     this.calendar.today();
     this.fetchWeeklyNotes();
+    this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
@@ -331,6 +334,10 @@ export default class Grid extends Component {
         this.saveWeeklyNotes();
       },
     });
+  }
+
+  refreshEditorContent() {
+    this.weeklyNotesEditor.render({ blocks: this.weeklyNotes.blocks.serialize() });
   }
 
   _clearSessionFields() {
