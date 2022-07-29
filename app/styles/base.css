@@ -16,3 +16,11 @@ body {
 .event__notes {
   height: 40vh;
 }
+
+h1 {
+  @apply text-2xl;
+}
+
+h2 {
+  @apply text-xl;
+}

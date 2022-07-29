@@ -1,7 +1,13 @@
 import Model, { attr } from '@ember-data/model';
+import { fragmentArray } from 'ember-data-model-fragments/attributes';
 
 export default class WeeklyNoteModel extends Model {
   @attr('string') notes;
   @attr startDate;
   @attr endDate;
+  @fragmentArray('editor/block', {
+    polymorphic: true,
+    typeKey: (data) => `editor/${data.type}`,
+  })
+  blocks;
 }

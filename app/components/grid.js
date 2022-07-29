@@ -11,6 +11,32 @@ import { DateTime } from 'luxon';
 import { eventTypes, eventTypeNames, eventTypeColors } from 'blocco-js/models/event';
 import { isPresent } from '@ember/utils';
 
+import EditorJS from '@editorjs/editorjs';
+import Header from '@editorjs/header';
+import List from '@editorjs/list';
+import InlineCode from '@editorjs/inline-code';
+import Checklist from '@editorjs/checklist';
+
+const editorTools = {
+  header: {
+    class: Header,
+    inlineToolbar: true,
+  },
+  list: {
+    class: List,
+    inlineToolbar: true,
+    config: {
+      defaultStyle: 'unordered',
+    },
+  },
+  inlineCode: {
+    class: InlineCode,
+  },
+  checklist: {
+    class: Checklist,
+    inlineToolbar: true,
+  },
+};
 const ignoredTargetTypes = ['textarea', 'input'];
 
 class GridConfig {
@@ -41,6 +67,7 @@ export default class Grid extends Component {
   @tracked currentDateTime = DateTime.local();
   @tracked weeklyNotes;
   @tracked shutdownStatus;
+  @tracked weeklyNotesEditor;
 
   constructor() {
     super(...arguments);
@@ -195,10 +222,11 @@ export default class Grid extends Component {
   }
 
   @action
-  fetchWeeklyNotes() {
+  async fetchWeeklyNotes() {
+    console.log('fetching weekly notes');
     let startOfWeek = this.currentDateTime.startOf('week');
     let endOfWeek = this.currentDateTime.endOf('week');
-    this.store
+    await this.store
       .queryRecord('weekly-note', {
         start_date: startOfWeek.toISODate(),
         end_date: endOfWeek.toISODate(),
@@ -214,16 +242,21 @@ export default class Grid extends Component {
           this.weeklyNotes.save();
         }
       });
+    console.log('done fetching weekly notes');
   }
 
   @action
   saveWeeklyNotes() {
-    this.weeklyNotes.save();
+    console.log('saving weekly notes');
+    this.weeklyNotesEditor.save().then((outputData) => {
+      console.log('saveWeeklyNotes', outputData.blocks);
+      this.weeklyNotes.blocks = outputData.blocks;
+      this.weeklyNotes.save();
+    });
   }
 
   @action
   fetchShutdownStatus() {
-    console.log('fetching shutdown status', { created_at: this.currentDateTime.toISODate() });
     this.store
       .queryRecord('shutdown-status', {
         created_at: this.currentDateTime.toISODate(),
@@ -251,8 +284,11 @@ export default class Grid extends Component {
   @action
   registerKeypressListener() {
     document.addEventListener('keydown', (event) => {
-      console.log(event);
-      if (ignoredTargetTypes.includes(event.target.type)) {
+      if (
+        ignoredTargetTypes.includes(event.target.type) ||
+        event.target.className.match(/ce-/g) ||
+        event.target.className.match(/cdx-/g)
+      ) {
         return;
       }
 
@@ -279,6 +315,21 @@ export default class Grid extends Component {
           this.toggleShutdownStatus();
           break;
       }
+    });
+  }
+
+  @action
+  setupWeeklyNotesEditor(element) {
+    console.log('setup editor', this.weeklyNotes.blocks.serialize());
+    this.weeklyNotesEditor = new EditorJS({
+      holder: element.id,
+      tools: editorTools,
+      data: {
+        blocks: this.weeklyNotes.blocks.serialize(),
+      },
+      onChange: () => {
+        this.saveWeeklyNotes();
+      },
     });
   }
 
