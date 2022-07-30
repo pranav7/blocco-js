@@ -1,11 +1,2 @@
-import { fragment } from 'ember-data-model-fragments/attributes';
 import Block from './block';
-
-export default class List extends Block {
-  @fragment('editor/list-item') data;
-
-  constructor() {
-    super(...arguments);
-    console.log('Block > List initialized');
-  }
-}
+export default class List extends Block {}
