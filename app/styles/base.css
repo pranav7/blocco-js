@@ -8,6 +8,10 @@ body {
   height: 90vh !important;
 }
 
+.calendar__week-grid__container {
+  min-width: 70vw;
+}
+
 .event__override {
   border-left-width: 4px !important;
   padding-left: 4px !important;
