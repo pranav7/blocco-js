@@ -111,7 +111,7 @@ export default class Grid extends Component {
     this.currentDateTime = this.currentDateTime.plus({ day: -1 });
     this.calendar.prev();
     await this.fetchWeeklyNotes();
-    this.refreshEditorContent();
+    await this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
@@ -129,7 +129,7 @@ export default class Grid extends Component {
     this.currentDateTime = DateTime.local();
     this.calendar.today();
     await this.fetchWeeklyNotes();
-    this.refreshEditorContent();
+    await this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
@@ -249,9 +249,7 @@ export default class Grid extends Component {
 
   @action
   saveWeeklyNotes() {
-    console.log('saving weekly notes');
     this.weeklyNotesEditor.save().then((outputData) => {
-      console.log('saveWeeklyNotes', outputData.blocks);
       this.weeklyNotes.blocks = outputData.blocks;
       this.weeklyNotes.save();
     });

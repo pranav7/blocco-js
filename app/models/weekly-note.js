@@ -8,6 +8,7 @@ export default class WeeklyNoteModel extends Model {
   @fragmentArray('editor/block', {
     polymorphic: true,
     typeKey: (data) => `editor/${data.type}`,
+    defaultValue: [{ type: 'paragraph', data: { text: '' } }],
   })
   blocks;
 }
