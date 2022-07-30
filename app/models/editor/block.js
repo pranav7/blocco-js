@@ -5,4 +5,9 @@ import { fragment } from 'ember-data-model-fragments/attributes';
 export default class Block extends Fragment {
   @attr('string') type;
   @fragment('editor/data') data;
+
+  constructor() {
+    super(...arguments);
+    console.log('Block initialized');
+  }
 }
