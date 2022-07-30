@@ -107,28 +107,28 @@ export default class Grid extends Component {
   }
 
   @action
-  previousDay() {
+  async previousDay() {
     this.currentDateTime = this.currentDateTime.plus({ day: -1 });
     this.calendar.prev();
-    this.fetchWeeklyNotes();
+    await this.fetchWeeklyNotes();
     this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
   @action
-  nextDay() {
+  async nextDay() {
     this.currentDateTime = this.currentDateTime.plus({ day: 1 });
     this.calendar.next();
-    this.fetchWeeklyNotes();
-    this.refreshEditorContent();
+    await this.fetchWeeklyNotes();
+    await this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
   @action
-  moveToToday() {
+  async moveToToday() {
     this.currentDateTime = DateTime.local();
     this.calendar.today();
-    this.fetchWeeklyNotes();
+    await this.fetchWeeklyNotes();
     this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
@@ -226,9 +226,9 @@ export default class Grid extends Component {
 
   @action
   async fetchWeeklyNotes() {
-    console.log('fetching weekly notes');
     let startOfWeek = this.currentDateTime.startOf('week');
     let endOfWeek = this.currentDateTime.endOf('week');
+
     await this.store
       .queryRecord('weekly-note', {
         start_date: startOfWeek.toISODate(),
@@ -245,7 +245,6 @@ export default class Grid extends Component {
           this.weeklyNotes.save();
         }
       });
-    console.log('done fetching weekly notes');
   }
 
   @action
@@ -336,8 +335,8 @@ export default class Grid extends Component {
     });
   }
 
-  refreshEditorContent() {
-    this.weeklyNotesEditor.render({ blocks: this.weeklyNotes.blocks.serialize() });
+  async refreshEditorContent() {
+    await this.weeklyNotesEditor.render({ blocks: this.weeklyNotes.blocks.serialize() });
   }
 
   _clearSessionFields() {
