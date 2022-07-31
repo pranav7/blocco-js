@@ -263,10 +263,8 @@ export default class Grid extends Component {
       })
       .then((response) => {
         if (isPresent(response)) {
-          console.log('found shutdown status', response);
           this.shutdownStatus = response;
         } else {
-          console.log('creating shutdown status', { created_at: this.currentDateTime.toISODate() });
           this.shutdownStatus = this.store.createRecord('shutdown-status', {
             createdAt: this.currentDateTime.toISODate(),
           });
@@ -320,7 +318,6 @@ export default class Grid extends Component {
 
   @action
   setupWeeklyNotesEditor(element) {
-    console.log('setup editor', this.weeklyNotes.blocks.serialize());
     this.weeklyNotesEditor = new EditorJS({
       holder: element.id,
       tools: editorTools,
