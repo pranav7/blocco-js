@@ -11,6 +11,32 @@ import { DateTime } from 'luxon';
 import { eventTypes, eventTypeNames, eventTypeColors } from 'blocco-js/models/event';
 import { isPresent } from '@ember/utils';
 
+import EditorJS from '@editorjs/editorjs';
+import Header from '@editorjs/header';
+import List from '@editorjs/list';
+import InlineCode from '@editorjs/inline-code';
+import Checklist from '@editorjs/checklist';
+
+const editorTools = {
+  header: {
+    class: Header,
+    inlineToolbar: true,
+  },
+  list: {
+    class: List,
+    inlineToolbar: true,
+    config: {
+      defaultStyle: 'unordered',
+    },
+  },
+  inlineCode: {
+    class: InlineCode,
+  },
+  checklist: {
+    class: Checklist,
+    inlineToolbar: true,
+  },
+};
 const ignoredTargetTypes = ['textarea', 'input'];
 
 class GridConfig {
@@ -41,6 +67,7 @@ export default class Grid extends Component {
   @tracked currentDateTime = DateTime.local();
   @tracked weeklyNotes;
   @tracked shutdownStatus;
+  @tracked weeklyNotesEditor;
 
   constructor() {
     super(...arguments);
@@ -80,26 +107,29 @@ export default class Grid extends Component {
   }
 
   @action
-  previousDay() {
+  async previousDay() {
     this.currentDateTime = this.currentDateTime.plus({ day: -1 });
     this.calendar.prev();
-    this.fetchWeeklyNotes();
+    await this.fetchWeeklyNotes();
+    await this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
   @action
-  nextDay() {
+  async nextDay() {
     this.currentDateTime = this.currentDateTime.plus({ day: 1 });
     this.calendar.next();
-    this.fetchWeeklyNotes();
+    await this.fetchWeeklyNotes();
+    await this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
   @action
-  moveToToday() {
+  async moveToToday() {
     this.currentDateTime = DateTime.local();
     this.calendar.today();
-    this.fetchWeeklyNotes();
+    await this.fetchWeeklyNotes();
+    await this.refreshEditorContent();
     this.fetchShutdownStatus();
   }
 
@@ -195,10 +225,11 @@ export default class Grid extends Component {
   }
 
   @action
-  fetchWeeklyNotes() {
+  async fetchWeeklyNotes() {
     let startOfWeek = this.currentDateTime.startOf('week');
     let endOfWeek = this.currentDateTime.endOf('week');
-    this.store
+
+    await this.store
       .queryRecord('weekly-note', {
         start_date: startOfWeek.toISODate(),
         end_date: endOfWeek.toISODate(),
@@ -218,22 +249,22 @@ export default class Grid extends Component {
 
   @action
   saveWeeklyNotes() {
-    this.weeklyNotes.save();
+    this.weeklyNotesEditor.save().then((outputData) => {
+      this.weeklyNotes.blocks = outputData.blocks;
+      this.weeklyNotes.save();
+    });
   }
 
   @action
   fetchShutdownStatus() {
-    console.log('fetching shutdown status', { created_at: this.currentDateTime.toISODate() });
     this.store
       .queryRecord('shutdown-status', {
         created_at: this.currentDateTime.toISODate(),
       })
       .then((response) => {
         if (isPresent(response)) {
-          console.log('found shutdown status', response);
           this.shutdownStatus = response;
         } else {
-          console.log('creating shutdown status', { created_at: this.currentDateTime.toISODate() });
           this.shutdownStatus = this.store.createRecord('shutdown-status', {
             createdAt: this.currentDateTime.toISODate(),
           });
@@ -251,8 +282,11 @@ export default class Grid extends Component {
   @action
   registerKeypressListener() {
     document.addEventListener('keydown', (event) => {
-      console.log(event);
-      if (ignoredTargetTypes.includes(event.target.type)) {
+      if (
+        ignoredTargetTypes.includes(event.target.type) ||
+        event.target.className.match(/ce-/g) ||
+        event.target.className.match(/cdx-/g)
+      ) {
         return;
       }
 
@@ -280,6 +314,24 @@ export default class Grid extends Component {
           break;
       }
     });
+  }
+
+  @action
+  setupWeeklyNotesEditor(element) {
+    this.weeklyNotesEditor = new EditorJS({
+      holder: element.id,
+      tools: editorTools,
+      data: {
+        blocks: this.weeklyNotes.blocks.serialize(),
+      },
+      onChange: () => {
+        this.saveWeeklyNotes();
+      },
+    });
+  }
+
+  async refreshEditorContent() {
+    await this.weeklyNotesEditor.render({ blocks: this.weeklyNotes.blocks.serialize() });
   }
 
   _clearSessionFields() {
