@@ -15,6 +15,7 @@ import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
 import InlineCode from '@editorjs/inline-code';
+import CodeTool from '@editorjs/code';
 import Checklist from '@editorjs/checklist';
 
 const editorTools = {
@@ -31,6 +32,9 @@ const editorTools = {
   },
   inlineCode: {
     class: InlineCode,
+  },
+  code: {
+    class: CodeTool,
   },
   checklist: {
     class: Checklist,
@@ -226,21 +230,18 @@ export default class Grid extends Component {
 
   @action
   async fetchWeeklyNotes() {
-    let startOfWeek = this.currentDateTime.startOf('week');
-    let endOfWeek = this.currentDateTime.endOf('week');
-
     await this.store
       .queryRecord('weekly-note', {
-        start_date: startOfWeek.toISODate(),
-        end_date: endOfWeek.toISODate(),
+        week_number: this.currentDateTime.weekNumber,
+        week_year: this.currentDateTime.weekYear,
       })
       .then((notes) => {
         if (isPresent(notes)) {
           this.weeklyNotes = notes;
         } else {
           this.weeklyNotes = this.store.createRecord('weekly-note', {
-            startDate: startOfWeek.toISODate(),
-            endDate: endOfWeek.toISODate(),
+            week_number: this.currentDateTime.weekNumber,
+            weeK_year: this.currentDateTime.weekYear,
           });
           this.weeklyNotes.save();
         }
