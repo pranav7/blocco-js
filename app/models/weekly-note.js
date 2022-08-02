@@ -5,6 +5,8 @@ export default class WeeklyNoteModel extends Model {
   @attr('string') notes;
   @attr startDate;
   @attr endDate;
+  @attr('number') weekNumber;
+  @attr('number') weekYear;
   @fragmentArray('editor/block', {
     polymorphic: true,
     typeKey: (data) => `editor/${data.type}`,
