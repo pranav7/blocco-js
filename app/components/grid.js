@@ -116,7 +116,7 @@ export default class Grid extends Component {
     this.calendar.prev();
     await this.fetchWeeklyNotes();
     await this.refreshEditorContent();
-    this.fetchShutdownStatus();
+    await this.fetchShutdownStatus();
   }
 
   @action
@@ -125,7 +125,7 @@ export default class Grid extends Component {
     this.calendar.next();
     await this.fetchWeeklyNotes();
     await this.refreshEditorContent();
-    this.fetchShutdownStatus();
+    await this.fetchShutdownStatus();
   }
 
   @action
@@ -134,7 +134,7 @@ export default class Grid extends Component {
     this.calendar.today();
     await this.fetchWeeklyNotes();
     await this.refreshEditorContent();
-    this.fetchShutdownStatus();
+    await this.fetchShutdownStatus();
   }
 
   @action
@@ -257,17 +257,21 @@ export default class Grid extends Component {
   }
 
   @action
-  fetchShutdownStatus() {
-    this.store
+  async fetchShutdownStatus() {
+    await this.store
       .queryRecord('shutdown-status', {
-        created_at: this.currentDateTime.toISODate(),
+        week_day: this.currentDateTime.weekday,
+        week_number: this.currentDateTime.weekNumber,
+        week_year: this.currentDateTime.weekYear,
       })
       .then((response) => {
         if (isPresent(response)) {
           this.shutdownStatus = response;
         } else {
           this.shutdownStatus = this.store.createRecord('shutdown-status', {
-            createdAt: this.currentDateTime.toISODate(),
+            weekDay: this.currentDateTime.weekday,
+            weekNumber: this.currentDateTime.weekNumber,
+            weekYear: this.currentDateTime.weekYear,
           });
           this.shutdownStatus.save();
         }
