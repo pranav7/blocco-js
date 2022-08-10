@@ -5,11 +5,11 @@ import { isPresent } from '@ember/utils';
 import { DateTime } from 'luxon';
 
 export const eventTypes = {
-  default: 0,
-  focus: 1,
-  outOfOffice: 2,
-  break: 3,
-  meeting: 4,
+  default: 'default',
+  focus: 'focus',
+  outOfOffice: 'out_of_office',
+  break: 'break',
+  meeting: 'meeting',
 };
 
 export const eventTypeNames = {
@@ -20,21 +20,24 @@ export const eventTypeNames = {
   [eventTypes.meeting]: '💬 Meeting',
 };
 
-export const eventTypeColors = {
+export const eventTypeStyles = {
   [eventTypes.break]: {
     backgroundColor: '#e2f9ff',
     borderColor: '#3788d8',
     textColor: '#346da5',
+    classNames: ['calendar-event', 'calendar-event__break'],
   },
   [eventTypes.outOfOffice]: {
     backgroundColor: '#e2f9ff',
     borderColor: '#3788d8',
     textColor: '#346da5',
+    classNames: ['calendar-event'],
   },
   [eventTypes.meeting]: {
     backgroundColor: '#ffcdb3',
     borderColor: '#fe7032',
     textColor: '#ca3800',
+    classNames: ['calendar-event'],
   },
 };
 
@@ -44,7 +47,7 @@ export default class EventModel extends Model {
   @attr('date') end;
   @attr('boolean', { defaultValue: false }) editable;
   @attr('boolean', { defaultValue: false }) allDay;
-  @attr('number') eventType;
+  @attr('string') eventType;
   @attr('string') color;
   @attr('string') backgroundColor;
   @attr('string') borderColor;
@@ -68,6 +71,7 @@ export default class EventModel extends Model {
   }
 
   get classNames() {
-    return ['event__override'];
+    console.log('get classNames', this.eventType);
+    return eventTypeStyles[this.eventType]?.classNames || ['calendar-event'];
   }
 }

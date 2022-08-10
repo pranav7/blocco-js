@@ -12,9 +12,14 @@ body {
   min-width: 70vw;
 }
 
-.event__override {
+.calendar-event {
   border-left-width: 4px !important;
   padding-left: 4px !important;
+}
+
+.calendar-event__break {
+  background-image: linear-gradient(45deg,transparent,transparent 40%,rgba(0,0,0,.1) 40%,rgba(0,0,0,.1) 50%,transparent 50%,transparent 90%,rgba(0,0,0,.1) 90%,rgba(0,0,0,.1));
+  background-size: 12px 12px;
 }
 
 .event__notes {

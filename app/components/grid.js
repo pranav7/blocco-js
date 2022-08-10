@@ -8,7 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { action } from '@ember/object';
 import { DateTime } from 'luxon';
-import { eventTypes, eventTypeNames, eventTypeColors } from 'blocco-js/models/event';
+import { eventTypes, eventTypeNames, eventTypeStyles } from 'blocco-js/models/event';
 import { isPresent } from '@ember/utils';
 
 import EditorJS from '@editorjs/editorjs';
@@ -199,9 +199,10 @@ export default class Grid extends Component {
       editable: true,
       notes: this.newEventObject.notes,
       allDay: this.newEventObject.allDay,
-      backgroundColor: eventTypeColors[this.newEventObject.eventType]?.backgroundColor,
-      borderColor: eventTypeColors[this.newEventObject.eventType]?.borderColor,
-      textColor: eventTypeColors[this.newEventObject.eventType]?.textColor,
+      eventTypes: this.newEventObject.eventType,
+      backgroundColor: eventTypeStyles[this.newEventObject.eventType]?.backgroundColor,
+      borderColor: eventTypeStyles[this.newEventObject.eventType]?.borderColor,
+      textColor: eventTypeStyles[this.newEventObject.eventType]?.textColor,
     });
 
     event.save().then(() => {
