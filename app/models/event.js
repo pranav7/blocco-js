@@ -6,8 +6,8 @@ import { DateTime } from 'luxon';
 
 export const eventTypes = {
   default: 'default',
-  focus: 'focus',
-  outOfOffice: 'out_of_office',
+  focus: 'focusTime',
+  outOfOffice: 'outOfOffice',
   break: 'break',
   meeting: 'meeting',
 };
@@ -31,7 +31,7 @@ export const eventTypeStyles = {
     backgroundColor: '#e2f9ff',
     borderColor: '#3788d8',
     textColor: '#346da5',
-    classNames: ['calendar-event'],
+    classNames: ['calendar-event', 'calendar-event__out-of-office'],
   },
   [eventTypes.meeting]: {
     backgroundColor: '#ffcdb3',
@@ -71,7 +71,6 @@ export default class EventModel extends Model {
   }
 
   get classNames() {
-    console.log('get classNames', this.eventType);
     return eventTypeStyles[this.eventType]?.classNames || ['calendar-event'];
   }
 }
