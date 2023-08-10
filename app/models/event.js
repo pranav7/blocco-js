@@ -49,14 +49,23 @@ export default class EventModel extends Model {
   @attr('boolean', { defaultValue: false }) allDay;
   @attr('string') eventType;
   @attr('string') color;
-  @attr('string') backgroundColor;
-  @attr('string') borderColor;
-  @attr('string') textColor;
   @attr('string') notes;
   @attr('string') googleEventId;
   @attr('string') meetingLink;
   @attr('string') creator;
   @array('string') attendees;
+
+  get backgroundColor() {
+    return eventTypeStyles[this.eventType]?.backgroundColor;
+  }
+
+  get borderColor() {
+    return eventTypeStyles[this.eventType]?.borderColor;
+  }
+
+  get textColor() {
+    return eventTypeStyles[this.eventType]?.textColor;
+  }
 
   get isExternal() {
     return isPresent(this.googleEventId);

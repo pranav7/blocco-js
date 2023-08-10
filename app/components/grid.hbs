@@ -34,7 +34,7 @@
     </div>
 
     <div class='flex flex-col flex-1 gap-4 mt-2'>
-      <div><h3 class='text-xl font-bold border-b'>This week</h3></div>
+      <div><h3 class='text-xl border-b'>This week</h3></div>
       <div
         {{did-insert (queue this.fetchWeeklyNotes this.setupWeeklyNotesEditor)}}
         id='editor'
@@ -144,6 +144,18 @@
       rows='6'
     />
   </div>
+
+  {{#each-in this.eventTypes as |eventTypeName eventTypeValue|}}
+    <div class='flex flex-row items-center gap-1'>
+      <Input
+        name="'event-type"
+        @type='radio'
+        @checked={{if (eq this.selectedEvent.eventType eventTypeValue) 'checked' ''}}
+        {{on 'click' (set this.selectedEvent 'eventType' eventTypeValue)}}
+      />
+      <label for='event-type'>{{get this.eventTypeNames eventTypeValue}}</label>
+    </div>
+  {{/each-in}}
 
   <div class='flex flex-row gap-2 mt-5'>
     <button

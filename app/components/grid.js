@@ -200,9 +200,6 @@ export default class Grid extends Component {
       notes: this.newEventObject.notes,
       allDay: this.newEventObject.allDay,
       eventTypes: this.newEventObject.eventType,
-      backgroundColor: eventTypeStyles[this.newEventObject.eventType]?.backgroundColor,
-      borderColor: eventTypeStyles[this.newEventObject.eventType]?.borderColor,
-      textColor: eventTypeStyles[this.newEventObject.eventType]?.textColor,
     });
 
     event.save().then(() => {
@@ -214,8 +211,11 @@ export default class Grid extends Component {
 
   @action
   saveEvent() {
-    this.calendarClickInfo.event.setProp('title', this.selectedEvent.title);
+    this.calendarClickInfo.event.remove();
     this.selectedEvent.save();
+
+    this.calendar.addEvent(this.selectedEvent);
+    // this.calenderClickInfo.event.remove();
 
     this._clearSessionFields();
     this.showEditEventDialog = false;
@@ -241,8 +241,8 @@ export default class Grid extends Component {
           this.weeklyNotes = notes;
         } else {
           this.weeklyNotes = this.store.createRecord('weekly-note', {
-            week_number: this.currentDateTime.weekNumber,
-            weeK_year: this.currentDateTime.weekYear,
+            weekNumber: this.currentDateTime.weekNumber,
+            weekYear: this.currentDateTime.weekYear,
           });
           this.weeklyNotes.save();
         }
